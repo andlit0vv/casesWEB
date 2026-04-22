@@ -83,6 +83,10 @@
     .roadmap-item:nth-child(even)::after{left:-34px}
     .roadmap-item h4{font-size:17px;color:var(--text);margin-bottom:4px}
 
+    .agent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+    .agent-cell{padding:16px;border:1px solid rgba(232,146,10,.32);border-radius:10px;background:rgba(255,255,255,.02)}
+    .agent-cell h4{font-size:17px;color:var(--text);margin-bottom:6px}
+
     .tech-row{display:flex;flex-wrap:wrap;gap:8px}
     .tech-chip{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.03);font-size:13px;line-height:1.2;color:var(--muted-strong)}
 
@@ -106,6 +110,7 @@
       .roadmap-item:nth-child(even)::before{right:100%;left:auto}
       .roadmap-item:nth-child(odd)::after,
       .roadmap-item:nth-child(even)::after{left:-22px;right:auto}
+      .agent-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -196,11 +201,11 @@
     <div class="block-sep"></div>
 
     <div class="section-heading reveal" id="architecture"><h2>Архитектура (цепочка агентов)</h2></div>
-    <div class="roadmap-vertical">
-      <div class="roadmap-item"><h4>Агент-планировщик</h4><p>Собирает структуру поста и ключевые тезисы в рабочий бриф.</p></div>
-      <div class="roadmap-item"><h4>Агент-копирайтер</h4><p>Создаёт текст строго по брифу, без смены логики и фокуса.</p></div>
-      <div class="roadmap-item"><h4>Агент-форматировщик</h4><p>Адаптирует материал под формат Telegram, сохраняя смысл и акценты.</p></div>
-      <div class="roadmap-item"><h4>Агент-редактор</h4><p>Проверяет стиль, тон и целостность перед передачей в публикацию.</p></div>
+    <div class="agent-grid">
+      <div class="agent-cell reveal"><h4>Агент-планировщик</h4><p>Собирает структуру поста и ключевые тезисы в рабочий бриф.</p></div>
+      <div class="agent-cell reveal"><h4>Агент-копирайтер</h4><p>Создаёт текст строго по брифу, без смены логики и фокуса.</p></div>
+      <div class="agent-cell reveal"><h4>Агент-форматировщик</h4><p>Адаптирует материал под формат Telegram, сохраняя смысл и акценты.</p></div>
+      <div class="agent-cell reveal"><h4>Агент-редактор</h4><p>Проверяет стиль, тон и целостность перед передачей в публикацию.</p></div>
     </div>
 
     <div class="block-sep"></div>
