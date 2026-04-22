@@ -28,14 +28,14 @@
     body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:150;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");opacity:.09;mix-blend-mode:soft-light}
     .page-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;--cx:50%;--cy:50%;background:#000}
     .grid-base,.grid-reveal{position:absolute;inset:0}
-    .grid-base{z-index:1;opacity:.07}
-    .grid-reveal{z-index:2;opacity:.62;-webkit-mask-image:radial-gradient(340px circle at var(--cx) var(--cy),black 0%,transparent 100%);mask-image:radial-gradient(340px circle at var(--cx) var(--cy),black 0%,transparent 100%)}
+    .grid-base{z-index:1;opacity:0}
+    .grid-reveal{z-index:2;opacity:.3;-webkit-mask-image:radial-gradient(300px circle at var(--cx) var(--cy),black 0%,transparent 100%);mask-image:radial-gradient(300px circle at var(--cx) var(--cy),black 0%,transparent 100%)}
     .grid-base svg,.grid-reveal svg{width:100%;height:100%;display:block}
     .bg-orbs{position:absolute;inset:0;z-index:0}
     .bg-orb{position:absolute;border-radius:50%;filter:blur(90px);animation:orbFloat ease-in-out infinite alternate}
-    .bg-orb--gold{width:22%;height:22%;right:-13%;top:-16%;background:radial-gradient(circle,rgba(255,215,0,.12) 0%,rgba(255,175,40,.04) 48%,transparent 70%);animation-duration:20s}
-    .bg-orb--amber{width:20%;height:20%;left:-10%;bottom:-15%;background:radial-gradient(circle,rgba(255,170,0,.1) 0%,rgba(245,128,20,.03) 50%,transparent 70%);animation-duration:24s;animation-direction:reverse}
-    .bg-orb--sun{width:12%;height:12%;right:12%;top:-5%;background:radial-gradient(circle,rgba(255,224,120,.08) 0%,transparent 68%);filter:blur(55px);animation-duration:15s}
+    .bg-orb--gold{width:22%;height:22%;right:-13%;top:-16%;background:radial-gradient(circle,rgba(255,215,0,.03) 0%,rgba(255,175,40,.01) 48%,transparent 70%);animation-duration:20s}
+    .bg-orb--amber{width:20%;height:20%;left:-10%;bottom:-15%;background:radial-gradient(circle,rgba(255,170,0,.025) 0%,rgba(245,128,20,.01) 50%,transparent 70%);animation-duration:24s;animation-direction:reverse}
+    .bg-orb--sun{width:12%;height:12%;right:12%;top:-5%;background:radial-gradient(circle,rgba(255,224,120,.015) 0%,transparent 68%);filter:blur(55px);animation-duration:15s}
     @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}100%{transform:translate(2%,-3%) scale(1.06)}}
     .page-grid{display:none}
 
@@ -65,7 +65,7 @@
     .metric-value{font-size:clamp(34px,3vw,44px);font-weight:800;line-height:1;color:var(--accent);margin-bottom:8px}
     .metric-note{font-size:14px;color:var(--text);line-height:1.55}
 
-    .section-divider{display:none}
+    .section-divider{display:block;max-width:var(--content-w);margin:0 auto 24px;border-top:1px solid rgba(255,255,255,.14);padding:0 clamp(20px,5vw,60px)}
     .case-body{position:relative;z-index:10;max-width:var(--content-w);margin:0 auto;padding:0 clamp(20px,5vw,60px) 140px}
     .section-heading{margin:76px 0 24px}
     .section-heading:first-child{margin-top:0}
@@ -103,7 +103,7 @@
 
     .architecture-system{position:relative;max-width:920px;margin:28px auto 0}
     .architecture-road{display:none}
-    .architecture-agents{position:relative;display:flex;flex-direction:column;gap:14px;z-index:3}
+    .architecture-agents{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;z-index:3}
     .agent-node{position:relative;width:100%;padding:18px 20px;border:1px solid rgba(255,255,255,.32);border-radius:14px;background:transparent;box-shadow:none;opacity:0;transform:translateY(26px) scale(.98);transition:opacity .55s ease,transform .55s ease}
     .agent-node.visible{opacity:1;transform:translateY(0) scale(1)}
     .agent-node h4{font-size:16px;color:var(--accent);margin-bottom:4px}
@@ -144,12 +144,13 @@
       .roadmap-marker{grid-column:1;justify-self:center;width:24px;height:24px;box-shadow:0 0 0 5px rgba(255,215,0,.08);margin-top:4px}
       .architecture-system{min-height:auto}
       .architecture-road{display:none}
+      .architecture-agents{grid-template-columns:1fr}
       .agent-node{width:100%}
     }
     @media (max-width:640px){
       .architecture-system{min-height:auto}
       .architecture-road{display:none}
-      .architecture-agents{position:relative;display:flex;flex-direction:column;gap:14px}
+      .architecture-agents{position:relative;display:grid;grid-template-columns:1fr;gap:14px}
       .agent-node{position:relative;width:100%;left:auto;right:auto;top:auto;bottom:auto;margin:0;opacity:1;transform:none}
     }
   </style>
@@ -166,7 +167,7 @@
       <svg id="svgBase">
         <defs>
           <pattern id="grid-base-pattern" width="44" height="44" patternUnits="userSpaceOnUse">
-            <path d="M 44 0 L 0 0 0 44" fill="none" stroke="rgba(255,190,70,1)" stroke-width="0.82"/>
+            <path d="M 44 0 L 0 0 0 44" fill="none" stroke="rgba(255,190,70,0.25)" stroke-width="0.82"/>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#grid-base-pattern)"/>
@@ -177,7 +178,7 @@
       <svg id="svgReveal">
         <defs>
           <pattern id="grid-reveal-pattern" width="44" height="44" patternUnits="userSpaceOnUse">
-            <path d="M 44 0 L 0 0 0 44" fill="none" stroke="rgba(255,215,80,1)" stroke-width="1.2"/>
+            <path d="M 44 0 L 0 0 0 44" fill="none" stroke="rgba(255,215,80,0.5)" stroke-width="1.1"/>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#grid-reveal-pattern)"/>
@@ -266,34 +267,7 @@
     <div class="block-sep"></div>
 
     <div class="section-heading reveal" id="example"><h2>Пример использования</h2></div>
-    <div class="roadmap-vertical">
-      <div class="roadmap-item right">
-        <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Ввод параметров</h4><p>Пользователь задаёт исходные данные: целевая аудитория, тема поста и задача.</p><div class="step-dropdown open" aria-hidden="false"><p>{
-  "topic": "Когда Telegram-боты вредят продажам",
-  "target_audience": "предприниматели, онлайн-школы, B2B",
-  "goal": "привлечь внимание и повысить экспертность",
-  "platform": "Telegram",
-  "..."
-}</p></div></div>
-      </div>
-      <div class="roadmap-item left">
-        <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Сборка брифа</h4><p>Агент-планировщик анализирует задачу, определяет структуру поста и ключевые тезисы.</p><div class="step-dropdown open" aria-hidden="false"><p>Готовый бриф с блоками: хук, аргументы, пример, призыв к действию и ограничения по тону.</p></div></div>
-      </div>
-      <div class="roadmap-item right">
-        <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Генерация текста</h4><p>Агент-копирайтер пишет основной текст на основе брифа и логики сообщения</p><div class="step-dropdown open" aria-hidden="false"><p>Черновик поста в нужной структуре, с логичными переходами и акцентом на ключевую мысль.</p></div></div>
-      </div>
-      <div class="roadmap-item left">
-        <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Адаптация под автора</h4><p>SMM-агент форматирует текст: смотрит на Tone Of Voice и разбивает на абзацы и добавляет акценты</p><div class="step-dropdown open" aria-hidden="false"><p>Версия под голос автора: короткие абзацы, акценты, понятная подача и корректная ритмика.</p></div></div>
-      </div>
-      <div class="roadmap-item right">
-        <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Финальная редактура</h4><p>Агент-редактор улучшает читаемость, выравнивает стиль и усиливает формулировки</p><div class="step-dropdown open" aria-hidden="false"><p>Финальный текст без лишнего шума: чистый стиль, выверенные формулировки и готовность к публикации.</p></div></div>
-      </div>
-    </div>
+    <p class="reveal"><strong>Ввод параметров:</strong> пользователь задаёт исходные данные — целевая аудитория, тема и задача поста.</p>
 
     <div class="block-sep"></div>
 
@@ -361,14 +335,6 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
 
     reveals.forEach(el => obs.observe(el));
-
-    const roadmapItems = document.querySelectorAll('.roadmap-item');
-    const roadmapObs = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        entry.target.classList.toggle('visible', entry.isIntersecting);
-      });
-    }, { threshold: 0.3, rootMargin: '0px 0px -10% 0px' });
-    roadmapItems.forEach((item) => roadmapObs.observe(item));
 
     const architectureNodes = document.querySelectorAll('.architecture-system .agent-node');
     const architectureObs = new IntersectionObserver((entries) => {
