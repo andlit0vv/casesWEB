@@ -69,8 +69,8 @@
     .flow-dot{width:10px;height:10px;margin-top:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent-glow)}
     .flow-step h3{font-size:18px;margin-bottom:4px;color:var(--text)}
 
-    .pipeline-horizontal{position:relative;display:grid;grid-template-columns:repeat(2,minmax(220px,280px));justify-content:center;gap:16px;margin-top:16px}
-    .pipeline-item{position:relative;aspect-ratio:1/1;padding:18px;border:1px solid var(--stroke-accent);border-radius:14px;background:rgba(255,255,255,.02);display:flex;flex-direction:column;justify-content:center}
+    .pipeline-horizontal{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+    .pipeline-item{position:relative;min-height:132px;padding:18px;border:1px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.03);display:flex;flex-direction:column;justify-content:center}
     .pipeline-item::after{display:none}
     .pipeline-item h3{font-size:17px;margin-bottom:6px;color:var(--text)}
 
