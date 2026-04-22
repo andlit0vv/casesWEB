@@ -10,247 +10,108 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Montserrat:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --bg:            #000000;
-      --accent:        #E8920A;
-      --accent-strong: #F5A822;
-      --accent-soft:   rgba(232,146,10,0.10);
-      --accent-glow:   rgba(232,146,10,0.22);
-      --text:          #ebebeb;
-      --muted:         rgba(235,235,235,0.52);
-      --muted-strong:  rgba(235,235,235,0.70);
-      --stroke:        rgba(255,255,255,0.08);
-      --stroke-accent: rgba(232,146,10,0.20);
-      --radius:        20px;
-      --radius-sm:     12px;
-      --transition:    cubic-bezier(0.4,0,0.2,1);
-      --content-w:     960px;
+      --bg:#000;
+      --accent:#E8920A;
+      --accent-strong:#F5A822;
+      --accent-soft:rgba(232,146,10,0.10);
+      --accent-glow:rgba(232,146,10,0.25);
+      --text:#ebebeb;
+      --muted:rgba(235,235,235,0.52);
+      --muted-strong:rgba(235,235,235,0.78);
+      --stroke:rgba(255,255,255,0.08);
+      --stroke-accent:rgba(232,146,10,0.25);
+      --radius:20px;
+      --radius-sm:12px;
+      --transition:cubic-bezier(0.4,0,0.2,1);
+      --content-w:1020px;
     }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-serif;font-size:17px;line-height:1.7;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");opacity:.10;mix-blend-mode:soft-light}
+    .page-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,#000 0%,#000 12%,#040200 32%,#0a0500 54%,#140900 76%,#1c0d00 100%)}
+    .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:orbFloat ease-in-out infinite alternate}
+    .orb-1{width:70vw;height:70vw;right:-20%;bottom:-20%;background:radial-gradient(circle,rgba(232,146,10,.16) 0%,rgba(200,100,5,.06) 45%,transparent 70%);filter:blur(80px);animation-duration:28s}
+    .orb-2{width:50vw;height:50vw;left:-15%;top:35%;background:radial-gradient(circle,rgba(16,185,129,.10) 0%,transparent 65%);filter:blur(100px);animation-duration:34s;animation-direction:reverse}
+    .orb-3{width:40vw;height:25vw;right:5%;top:8%;background:radial-gradient(ellipse,rgba(245,168,34,.09) 0%,transparent 65%);filter:blur(70px);animation-duration:22s}
+    @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}100%{transform:translate(2%,-3%) scale(1.05)}}
+    .page-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(232,146,10,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(232,146,10,.028) 1px,transparent 1px);background-size:60px 60px;mask-image:linear-gradient(180deg,transparent 0%,transparent 20%,rgba(0,0,0,.4) 55%,rgba(0,0,0,.7) 100%)}
 
-    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-    html { scroll-behavior:smooth; }
+    header{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px clamp(16px,4vw,48px) 14px;transition:border-color .4s,background .4s}
+    header.scrolled{background:rgba(0,0,0,.78);backdrop-filter:blur(18px);border-bottom:1px solid var(--stroke)}
+    .header-top{display:flex;align-items:center;justify-content:space-between}
+    .header-logo{font-family:"Montserrat",sans-serif;font-weight:700;font-size:18px;color:var(--text);text-decoration:none}
+    .header-logo span{color:var(--accent)}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 17px;
-      line-height: 1.75;
-      overflow-x: hidden;
-    }
+    .nav-flyout{position:relative}
+    .nav-toggle{width:44px;height:44px;border-radius:12px;border:1px solid var(--stroke-accent);background:rgba(0,0,0,.45);color:var(--text);display:grid;place-items:center;cursor:pointer;transition:.2s var(--transition)}
+    .nav-toggle:hover{border-color:var(--accent);box-shadow:0 0 16px rgba(232,146,10,.25);color:var(--accent)}
+    .nav-toggle .arrow{font-size:19px;display:inline-block;transition:transform .25s var(--transition)}
+    .nav-flyout:hover .arrow{transform:translateX(-3px)}
+    .header-nav-grid{position:absolute;top:54px;left:0;display:grid;gap:8px;min-width:220px;padding:10px;border:1px solid var(--stroke-accent);background:rgba(0,0,0,.92);border-radius:12px;backdrop-filter:blur(12px);opacity:0;transform:translateY(-6px);pointer-events:none;transition:.2s var(--transition)}
+    .nav-flyout:hover .header-nav-grid,.nav-flyout:focus-within .header-nav-grid{opacity:1;transform:translateY(0);pointer-events:auto}
+    .nav-link{padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.08);text-decoration:none;color:var(--muted-strong);font-size:12px;font-family:"Montserrat",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+    .nav-link:hover{border-color:var(--accent);background:rgba(232,146,10,.10);color:var(--text)}
 
-    body::before {
-      content:""; position:fixed; inset:0; pointer-events:none; z-index:200;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
-      opacity:0.10; mix-blend-mode:soft-light;
-    }
+    .case-hero{position:relative;z-index:10;padding:190px clamp(20px,5vw,60px) 60px;max-width:1100px;margin:0 auto}
+    .case-title{font-size:clamp(34px,5.2vw,66px);font-weight:700;letter-spacing:-.055em;line-height:1;margin-bottom:20px}
+    .case-title .hi{color:var(--accent)}
+    .case-lead{font-size:clamp(17px,1.8vw,21px);color:var(--muted-strong);line-height:1.65;max-width:760px;padding-left:20px;border-left:1px solid rgba(255,255,255,.12)}
 
-    .page-bg {
-      position:fixed; inset:0; z-index:0; pointer-events:none;
-      background:linear-gradient(180deg,#000000 0%,#000000 12%,#040200 32%,#0a0500 54%,#140900 76%,#1c0d00 100%);
-    }
+    .section-divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,146,10,.18),transparent);margin:44px 0 60px;position:relative;z-index:10}
+    .case-body{position:relative;z-index:10;max-width:var(--content-w);margin:0 auto;padding:0 clamp(20px,5vw,60px) 120px}
+    .section-heading{display:flex;align-items:flex-start;gap:16px;margin:48px 0 20px}
+    .section-heading:first-child{margin-top:0}
+    .section-num{flex-shrink:0;width:36px;height:36px;background:var(--accent-soft);border:1px solid var(--stroke-accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:"Montserrat",sans-serif;font-size:12px;font-weight:700;color:var(--accent);margin-top:2px}
+    .section-heading h2{font-size:clamp(21px,2.5vw,32px);font-weight:700;letter-spacing:-.045em;line-height:1.07}
+    .case-body p{color:var(--muted-strong);margin-bottom:16px}
+    .block-sep{border-top:1px solid rgba(255,255,255,.06);margin:28px 0}
 
-    .orb { position:fixed; border-radius:50%; pointer-events:none; z-index:0; animation: orbFloat ease-in-out infinite alternate; }
-    .orb-1 {
-      width:70vw; height:70vw; right:-20%; bottom:-20%;
-      background:radial-gradient(circle,rgba(232,146,10,0.16) 0%,rgba(200,100,5,0.06) 45%,transparent 70%);
-      filter:blur(80px); animation-duration:28s;
-    }
-    .orb-2 {
-      width:50vw; height:50vw; left:-15%; top:35%;
-      background:radial-gradient(circle,rgba(16,185,129,0.10) 0%,transparent 65%);
-      filter:blur(100px); animation-duration:34s; animation-direction:reverse;
-    }
-    .orb-3 {
-      width:40vw; height:25vw; right:5%; top:8%;
-      background:radial-gradient(ellipse,rgba(245,168,34,0.09) 0%,transparent 65%);
-      filter:blur(70px); animation-duration:22s;
-    }
-    @keyframes orbFloat { 0% {transform:translate(0,0) scale(1);} 100% {transform:translate(2%,-3%) scale(1.05);} }
+    .bold-accent-smm strong{font-weight:700;color:var(--text)}
+    .bold-accent-smm .smm{color:var(--accent)}
+    .glow-underline{display:inline-block;padding-bottom:10px;border-bottom:1px solid rgba(232,146,10,.65);box-shadow:0 8px 22px -12px rgba(232,146,10,.95)}
 
-    .page-grid {
-      position:fixed; inset:0; z-index:0; pointer-events:none;
-      background-image:linear-gradient(rgba(232,146,10,0.028) 1px,transparent 1px),linear-gradient(90deg,rgba(232,146,10,0.028) 1px,transparent 1px);
-      background-size:60px 60px;
-      mask-image:linear-gradient(180deg,transparent 0%,transparent 20%,rgba(0,0,0,0.4) 55%,rgba(0,0,0,0.7) 100%);
-    }
+    .goal-label{font-family:"Montserrat",sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    .goal-card{padding:20px;border:1px solid var(--stroke-accent);border-radius:14px;background:rgba(255,255,255,.03);position:relative}
+    .goal-card::after{content:"";position:absolute;left:20px;right:20px;bottom:10px;height:1px;background:rgba(232,146,10,.55);box-shadow:0 0 16px rgba(232,146,10,.6)}
 
-    header {
-      position:fixed; top:0; left:0; right:0; z-index:100;
-      padding:16px clamp(20px,5vw,60px) 14px;
-      border-bottom:1px solid rgba(255,255,255,0);
-      transition:border-color .4s, background .4s;
-    }
-    header.scrolled {
-      background:rgba(0,0,0,0.78);
-      backdrop-filter:blur(20px);
-      border-color:var(--stroke);
-    }
-    .header-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
-    .header-logo {
-      font-family:"Montserrat",sans-serif; font-weight:700; font-size:18px;
-      color:var(--text); text-decoration:none; display:flex; align-items:center; gap:6px;
-    }
-    .header-logo span { color:var(--accent); }
-    .back-link {
-      display:inline-flex; align-items:center; gap:8px;
-      font-family:"Montserrat",sans-serif;
-      font-size:11px; letter-spacing:0.10em; text-transform:uppercase; font-weight:600;
-      color:var(--muted); text-decoration:none; transition:color .25s var(--transition);
-    }
-    .back-link:hover { color:var(--accent); }
-    .back-arrow {
-      width:20px; height:20px; border:1px solid var(--stroke); border-radius:50%;
-      display:flex; align-items:center; justify-content:center; font-size:10px;
-      transition:border-color .25s var(--transition), background .25s var(--transition);
-    }
-    .back-link:hover .back-arrow { border-color:var(--accent); background:var(--accent-soft); }
+    .mini-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:10px 0 20px}
+    .mini-card-title{font-size:15px;color:var(--text);margin:8px 0 10px}
+    .mini-card{padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.03);position:relative}
+    .mini-card::after{content:"";position:absolute;left:14px;right:14px;bottom:8px;height:1px;background:rgba(232,146,10,.5);box-shadow:0 0 14px rgba(232,146,10,.45)}
 
-    .header-nav-grid {
-      display:grid;
-      grid-template-columns:repeat(6,minmax(0,1fr));
-      gap:8px;
-      max-width:var(--content-w);
-      margin:0 auto;
-    }
-    .nav-card {
-      border:1px solid var(--stroke-accent);
-      background:rgba(232,146,10,0.08);
-      border-radius:10px;
-      padding:8px 10px;
-      text-align:center;
-      color:var(--text);
-      font-family:"Montserrat",sans-serif;
-      font-size:11px;
-      letter-spacing:0.04em;
-      text-transform:uppercase;
-      text-decoration:none;
-      transition:background .2s var(--transition), border-color .2s var(--transition);
-    }
-    .nav-card:hover { background:rgba(232,146,10,0.16); border-color:rgba(245,168,34,0.45); }
+    .pipeline{position:relative;display:grid;gap:22px;margin-top:12px;padding:8px 0}
+    .pipeline::before{content:"";position:absolute;left:18px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(232,146,10,.35),rgba(255,255,255,.1))}
+    .pipeline-item{position:relative;margin-left:48px;padding:16px 18px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.03)}
+    .pipeline-item::before{content:"";position:absolute;left:-38px;top:24px;width:18px;height:18px;border-radius:50%;background:#131313;border:2px solid var(--accent);box-shadow:0 0 12px rgba(232,146,10,.45)}
+    .pipeline-item h3{font-size:18px;margin-bottom:8px}
 
-    .case-hero {
-      position:relative; z-index:10;
-      padding: 240px clamp(20px,5vw,60px) 70px;
-      max-width:1100px; margin:0 auto;
-    }
+    .roadmap{position:relative;margin-top:8px;padding:14px 0 10px}
+    .roadmap::before{content:"";position:absolute;left:50%;transform:translateX(-50%);top:0;bottom:0;width:2px;background:rgba(255,255,255,.22)}
+    .roadmap-item{position:relative;width:50%;padding:0 28px 22px}
+    .roadmap-item .node{position:absolute;top:10px;width:16px;height:16px;border-radius:50%;background:#111;border:2px solid var(--accent);box-shadow:0 0 10px rgba(232,146,10,.6)}
+    .roadmap-item .box{border:1px solid rgba(255,255,255,.13);border-radius:12px;padding:12px 14px;background:rgba(255,255,255,.03)}
+    .roadmap-item h4{color:var(--accent);font-size:16px;margin-bottom:4px}
+    .roadmap-item.left{margin-right:auto;text-align:right}
+    .roadmap-item.left .node{right:-8px}
+    .roadmap-item.right{margin-left:auto}
+    .roadmap-item.right .node{left:-8px}
 
-    .case-title {
-      font-size:clamp(34px,5.2vw,66px);
-      font-weight:700;
-      letter-spacing:-0.055em;
-      line-height:1;
-      margin-bottom:20px;
-    }
-    .case-title .hi { color:var(--accent); }
-    .case-lead {
-      font-size:clamp(17px,1.8vw,21px);
-      color:var(--muted-strong);
-      line-height:1.65;
-      max-width:760px;
-      border-left:2px solid var(--accent);
-      padding-left:20px;
-    }
+    .results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+    .result-block{padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);position:relative}
+    .result-block::after{content:"";position:absolute;left:14px;right:14px;bottom:7px;height:1px;background:rgba(232,146,10,.58);box-shadow:0 0 12px rgba(232,146,10,.5)}
 
-    .section-divider { width:100%; height:1px; background:linear-gradient(90deg,transparent,rgba(232,146,10,0.18),transparent); margin:44px 0 60px; position:relative; z-index:10; }
+    .tech-row{display:flex;flex-wrap:wrap;gap:8px}
+    .tech-badge{width:92px;height:92px;display:grid;place-items:center;text-align:center;padding:8px;border-radius:12px;border:1px solid var(--stroke-accent);background:rgba(232,146,10,.07);font-size:12px;line-height:1.2}
 
-    .case-body {
-      position:relative; z-index:10;
-      max-width:var(--content-w);
-      margin:0 auto;
-      padding:0 clamp(20px,5vw,60px) 120px;
-    }
+    .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
 
-    .section-heading { display:flex; align-items:flex-start; gap:16px; margin:48px 0 20px; }
-    .section-heading:first-child { margin-top:0; }
-    .section-num {
-      flex-shrink:0; width:36px; height:36px;
-      background:var(--accent-soft); border:1px solid var(--stroke-accent); border-radius:10px;
-      display:flex; align-items:center; justify-content:center;
-      font-family:"Montserrat",sans-serif; font-size:12px; font-weight:700; color:var(--accent);
-      margin-top:2px;
-    }
-    .section-heading h2 { font-size:clamp(21px,2.5vw,32px); font-weight:700; letter-spacing:-0.045em; line-height:1.07; }
-
-    .case-body p { color:var(--muted-strong); margin-bottom:16px; font-size:17px; line-height:1.76; }
-
-    .block-sep {
-      border-top:1px solid rgba(255,255,255,0.06);
-      margin:28px 0;
-      padding-top:4px;
-    }
-
-    .list-block {
-      margin:16px 0 26px;
-      border-left:3px solid var(--accent);
-      padding-left:16px;
-    }
-    .list-block ul {
-      list-style:none;
-      display:grid;
-      gap:0;
-      margin:0;
-      padding:0;
-    }
-    .list-block li {
-      color:var(--muted-strong);
-      line-height:1.65;
-      padding:10px 0 10px 18px;
-      position:relative;
-      border-bottom:1px solid rgba(255,255,255,0.08);
-    }
-    .list-block li:last-child { border-bottom:none; }
-    .list-block li::before {
-      content:"";
-      position:absolute;
-      left:0;
-      top:18px;
-      width:7px;
-      height:7px;
-      border-radius:50%;
-      background:var(--accent);
-      box-shadow:0 0 10px rgba(232,146,10,0.50);
-    }
-
-    .callout {
-      margin:18px 0 26px;
-      padding:18px 20px;
-      border-radius:var(--radius-sm);
-      border-left:3px solid var(--accent);
-      background:rgba(232,146,10,0.06);
-    }
-    .callout p { margin:0; color:rgba(235,235,235,0.85); }
-
-    .tech-grid {
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:10px;
-      margin-top:6px;
-      border-left:3px solid var(--accent);
-      padding-left:16px;
-    }
-    .tech-badge {
-      padding:8px 12px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,0.1);
-      border-bottom:1px solid rgba(255,255,255,0.18);
-      background:rgba(255,255,255,0.03);
-      color:var(--muted-strong);
-      font-family:"Montserrat",sans-serif;
-      font-size:12px;
-    }
-
-    .reveal { opacity:0; transform:translateY(22px); transition:opacity .6s cubic-bezier(0.22,1,0.36,1), transform .6s cubic-bezier(0.22,1,0.36,1); }
-    .reveal.visible { opacity:1; transform:translateY(0); }
-
-    @media (max-width:900px) {
-      .header-nav-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
-      .case-hero { padding-top:280px; }
-    }
-    @media (max-width:640px) {
-      .header-nav-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-      .header-top { margin-bottom:10px; }
-      .case-hero { padding-top:340px; }
-      .tech-grid { grid-template-columns:1fr; }
+    @media (max-width:840px){
+      .case-hero{padding-top:170px}
+      .roadmap::before{left:22px;transform:none}
+      .roadmap-item,.roadmap-item.left,.roadmap-item.right{width:100%;margin:0;text-align:left;padding:0 0 20px 52px}
+      .roadmap-item .node,.roadmap-item.left .node,.roadmap-item.right .node{left:14px;right:auto}
     }
   </style>
 </head>
@@ -264,16 +125,19 @@
   <header id="hdr">
     <div class="header-top">
       <a class="header-logo" href="/">Aivion<span>.</span></a>
-      <a class="back-link" href="/#portfolio"><span class="back-arrow">←</span>Все кейсы</a>
+      <div class="nav-flyout" aria-label="Навигация по кейсу">
+        <button class="nav-toggle" aria-label="Открыть навигацию"><span class="arrow">←</span></button>
+        <nav class="header-nav-grid">
+          <a class="nav-link" href="#context">Контекст</a>
+          <a class="nav-link" href="#problem">Проблема</a>
+          <a class="nav-link" href="#goal">Цель</a>
+          <a class="nav-link" href="#solution">Решение</a>
+          <a class="nav-link" href="#example">Пример</a>
+          <a class="nav-link" href="#results">Результаты</a>
+          <a class="nav-link" href="#stack">Стек</a>
+        </nav>
+      </div>
     </div>
-    <nav class="header-nav-grid" aria-label="Навигация по кейсу">
-      <a class="nav-card" href="#context">Контекст</a>
-      <a class="nav-card" href="#problem">Проблема</a>
-      <a class="nav-card" href="#solution">Решение</a>
-      <a class="nav-card" href="#example">Пример</a>
-      <a class="nav-card" href="#results">Результаты</a>
-      <a class="nav-card" href="#stack">Стэк</a>
-    </nav>
   </header>
 
   <div class="case-hero">
@@ -284,161 +148,83 @@
   <div class="section-divider"></div>
 
   <article class="case-body">
-    <div class="section-heading reveal" id="context">
-      <span class="section-num">1</span>
-      <h2>Контекст</h2>
-    </div>
-    <p class="reveal"><strong>Заказчик:</strong> маркетинговое агентство (NDA), ведущее более 20 Telegram-каналов различной тематики. Написание одного поста занимал у них почти час. Мы сократили это до 2 минут.</p>
+    <div class="section-heading reveal" id="context"><span class="section-num">1</span><h2>Контекст</h2></div>
+    <p class="reveal">Заказчик: маркетинговое агентство (NDA), ведущее более 20 Telegram-каналов различной тематики. Написание одного поста занимал почти час. Мы сократили это до 2 минут.</p>
 
     <div class="block-sep"></div>
 
-    <div class="section-heading reveal" id="problem">
-      <span class="section-num">2</span>
-      <h2>Как мы диагностировали проблему</h2>
-    </div>
-    <p class="reveal">SMM-специалист вручную проходил все этапы: придумывал тему, писал текст, адаптировал под формат Telegram, добавлял оформление. Один пост — около 50 минут.</p>
-    <p class="reveal">При 20+ каналах это превращалось в конвейер, где человек работал как робот.</p>
-    <p class="reveal">В ходе аудита стало ясно: корневая проблема не в скорости конкретного сотрудника, а в архитектуре процесса. Один человек закрывал четыре принципиально разные задачи одновременно — это:</p>
-    <div class="list-block reveal">
-      <ul>
-        <li>снижало качество каждой из них</li>
-        <li>делало масштабирование невозможным без найма</li>
-      </ul>
-    </div>
+    <div class="section-heading reveal" id="problem"><span class="section-num">2</span><h2>Как мы диагностировали проблему</h2></div>
+    <p class="reveal bold-accent-smm"><strong><span class="smm">SMM</span>-специалист вручную проходил все этапы: придумывал тему, писал текст, адаптировал под формат Telegram, добавлял оформление. Один пост — около 50 минут.</strong></p>
+    <p class="reveal bold-accent-smm"><strong>При 20+ каналах это превращалось в конвейер, где человек работал как робот.</strong></p>
+    <p class="reveal bold-accent-smm"><strong>В ходе аудита стало ясно: корневая проблема не в скорости конкретного сотрудника, а в архитектуре процесса. Один человек закрывал четыре принципиально разные задачи одновременно — это</strong></p>
+    <p class="reveal"><span class="glow-underline">снижало качество каждой из них; делало масштабирование невозможным без найма</span></p>
 
     <div class="block-sep"></div>
 
-    <div class="section-heading reveal">
-      <span class="section-num">3</span>
-      <h2>Цель</h2>
-    </div>
-    <p class="reveal">Автоматизировать полный цикл создания контента и обеспечить единый стандарт качества без расширения штата.</p>
+    <div class="section-heading reveal" id="goal"><span class="section-num">3</span><h2>Цель</h2></div>
+    <div class="goal-label reveal">Цель</div>
+    <div class="goal-card reveal">Автоматизировать полный цикл создания контента и обеспечить единый стандарт качества без расширения штата.</div>
 
     <div class="block-sep"></div>
 
-    <div class="section-heading reveal" id="solution">
-      <span class="section-num">4</span>
-      <h2>Решение</h2>
+    <div class="section-heading reveal" id="solution"><span class="section-num">4</span><h2>Решение</h2></div>
+    <p class="reveal"><strong>Мы построили веб-приложение с мультиагентной архитектурой — каждый этап производства поста закреплён за отдельным агентом.</strong></p>
+
+    <p class="reveal mini-card-title">Это ключевое архитектурное решение:</p>
+    <div class="mini-card-grid reveal">
+      <div class="mini-card">агенты не конкурируют за контекст</div>
+      <div class="mini-card">не мешают друг другу</div>
+      <div class="mini-card">результат получается стабильным и предсказуемым</div>
     </div>
-    <p class="reveal">Мы построили веб-приложение с мультиагентной архитектурой — каждый этап производства поста закреплён за отдельным агентом.</p>
-    <p class="reveal">Это ключевое архитектурное решение:</p>
-    <div class="list-block reveal">
-      <ul>
-        <li>агенты не конкурируют за контекст</li>
-        <li>не мешают друг другу</li>
-        <li>результат получается стабильным и предсказуемым</li>
-      </ul>
+
+    <p class="reveal mini-card-title">Система работает как жёсткий конвейер:</p>
+    <div class="mini-card-grid reveal">
+      <div class="mini-card">результат каждого этапа передаётся следующему</div>
+      <div class="mini-card">используется типизированный JSON-бриф</div>
+      <div class="mini-card">агент не может двигаться дальше без валидного входа</div>
     </div>
-    <p class="reveal">Система работает как жёсткий конвейер:</p>
-    <div class="list-block reveal">
-      <ul>
-        <li>результат каждого этапа передаётся следующему</li>
-        <li>используется типизированный JSON-бриф</li>
-        <li>агент не может двигаться дальше без валидного входа</li>
-      </ul>
-    </div>
-    <p class="reveal">Это:</p>
-    <div class="list-block reveal">
-      <ul>
-        <li>убирает «галлюцинации»</li>
-        <li>исключает генерацию «в никуда»</li>
-      </ul>
+
+    <p class="reveal mini-card-title">Это:</p>
+    <div class="mini-card-grid reveal">
+      <div class="mini-card">убирает «галлюцинации»</div>
+      <div class="mini-card">исключает генерацию «в никуда»</div>
     </div>
 
     <div class="block-sep"></div>
 
-    <div class="section-heading reveal">
-      <span class="section-num">5</span>
-      <h2>Архитектура (цепочка агентов)</h2>
-    </div>
-
-    <h3 class="reveal" style="margin:8px 0 12px;">1. Агент-планировщик</h3>
-    <div class="list-block reveal">
-      <ul>
-        <li>Формирует структуру поста</li>
-        <li>Определяет ключевые мысли и формат подачи</li>
-        <li>На выходе: <strong>бриф, а не текст</strong></li>
-      </ul>
-    </div>
-    <div class="callout reveal"><p>Принцип: следующий агент получает задание, а не черновик.</p></div>
-
-    <h3 class="reveal" style="margin:16px 0 12px;">2. Агент-копирайтер</h3>
-    <div class="list-block reveal">
-      <ul>
-        <li>Пишет текст строго по брифу</li>
-        <li>Не занимается структурой и форматированием</li>
-      </ul>
-    </div>
-    <div class="callout reveal"><p>Разделение ответственности даёт более чистый результат.</p></div>
-
-    <h3 class="reveal" style="margin:16px 0 12px;">3. Агент-форматировщик</h3>
-    <div class="list-block reveal">
-      <ul>
-        <li>Адаптирует текст под Telegram</li>
-        <li>Разбивает на абзацы</li>
-        <li>Добавляет эмодзи</li>
-        <li>Вставляет CTA</li>
-      </ul>
-    </div>
-    <div class="callout reveal"><p>Работает только с формой, не меняя смысл.</p></div>
-
-    <h3 class="reveal" style="margin:16px 0 12px;">4. Агент-редактор</h3>
-    <div class="list-block reveal">
-      <ul>
-        <li>Исправляет ошибки</li>
-        <li>Выравнивает стиль</li>
-        <li>Проверяет tone of voice</li>
-      </ul>
-    </div>
-    <div class="callout reveal"><p>Финальный контроль перед выдачей.</p></div>
-
-    <div class="block-sep"></div>
-
-    <div class="section-heading reveal" id="example">
-      <span class="section-num">6</span>
-      <h2>Пример использования</h2>
-    </div>
-    <p class="reveal"><strong>Входные данные от SMM-менеджера:</strong></p>
-    <div class="list-block reveal">
-      <ul>
-        <li>Аудитория: предприниматели</li>
-        <li>Цель: продажа услуги автоматизации</li>
-        <li>Тезисы: сокращение времени, снижение затрат, рост выручки</li>
-      </ul>
-    </div>
-    <p class="reveal"><strong>Процесс:</strong></p>
-    <div class="list-block reveal">
-      <ul>
-        <li>Планировщик формирует бриф: заголовок «Вы тратите 3 часа в день на рутину — мы уберём это за вас» и структуру: проблема, последствия, решение, призыв</li>
-        <li>Копирайтер пишет текст по структуре</li>
-        <li>Форматировщик адаптирует под Telegram</li>
-        <li>Редактор финализирует</li>
-      </ul>
-    </div>
-    <p class="reveal"><strong>Результат:</strong> Готовый пост → менеджер проверяет → публикует.</p>
-
-    <div class="block-sep"></div>
-
-    <div class="section-heading reveal" id="results">
-      <span class="section-num">7</span>
-      <h2>Результаты</h2>
-    </div>
-    <div class="list-block reveal">
-      <ul>
-        <li><strong>x20 ускорение</strong> — ~50 минут → ~2 минуты на пост</li>
-        <li><strong>–80% ручной работы</strong> — устранены рутинные этапы, роль специалиста → контроль качества</li>
-        <li><strong>x2.3 рост ERR</strong> — за счёт единой структуры, форматирования и встроенных CTA</li>
-        <li><strong>Масштабирование без найма</strong> — 20+ каналов обслуживаются тем же составом</li>
-      </ul>
+    <div class="section-heading reveal"><span class="section-num">5</span><h2>Архитектура (цепочка агентов)</h2></div>
+    <div class="pipeline">
+      <div class="pipeline-item reveal"><h3>1. Агент-планировщик</h3><p>Формирует структуру поста, определяет ключевые мысли и формат подачи. На выходе формирует бриф, а не текст.</p></div>
+      <div class="pipeline-item reveal"><h3>2. Агент-копирайтер</h3><p>Пишет текст строго по брифу, не занимается структурой и форматированием. Разделение ответственности даёт более чистый результат.</p></div>
+      <div class="pipeline-item reveal"><h3>3. Агент-форматировщик</h3><p>Адаптирует текст под Telegram, разбивает на абзацы, добавляет эмодзи и CTA, не меняя смысл.</p></div>
+      <div class="pipeline-item reveal"><h3>4. Агент-редактор</h3><p>Исправляет ошибки, выравнивает стиль и проверяет tone of voice перед финальной выдачей.</p></div>
     </div>
 
     <div class="block-sep"></div>
 
-    <div class="section-heading reveal" id="stack">
-      <span class="section-num">8</span>
-      <h2>Стек</h2>
+    <div class="section-heading reveal" id="example"><span class="section-num">6</span><h2>Пример использования</h2></div>
+    <div class="roadmap">
+      <div class="roadmap-item left reveal"><span class="node"></span><div class="box"><h4>01 Вход</h4><p>Аудитория: предприниматели. Цель: продажа услуги автоматизации.</p></div></div>
+      <div class="roadmap-item right reveal"><span class="node"></span><div class="box"><h4>02 Планировщик</h4><p>Формирует бриф: заголовок и структуру «проблема → последствия → решение → призыв».</p></div></div>
+      <div class="roadmap-item left reveal"><span class="node"></span><div class="box"><h4>03 Копирайтер</h4><p>Создаёт основной текст по структуре и тезисам.</p></div></div>
+      <div class="roadmap-item right reveal"><span class="node"></span><div class="box"><h4>04 Форматировщик</h4><p>Адаптирует контент под Telegram и усиливает читаемость.</p></div></div>
+      <div class="roadmap-item left reveal"><span class="node"></span><div class="box"><h4>05 Редактор</h4><p>Финализирует пост. Менеджер проверяет и публикует.</p></div></div>
     </div>
-    <div class="tech-grid reveal">
+
+    <div class="block-sep"></div>
+
+    <div class="section-heading reveal" id="results"><span class="section-num">7</span><h2>Результаты</h2></div>
+    <div class="results-grid reveal">
+      <div class="result-block"><strong>x20 ускорение</strong><br/>~50 минут → ~2 минуты на пост</div>
+      <div class="result-block"><strong>–80% ручной работы</strong><br/>Рутинные этапы убраны, роль специалиста смещена в контроль качества</div>
+      <div class="result-block"><strong>x2.3 рост ERR</strong><br/>Единая структура, форматирование и встроенные CTA</div>
+      <div class="result-block"><strong>Масштабирование без найма</strong><br/>20+ каналов обслуживаются тем же составом</div>
+    </div>
+
+    <div class="block-sep"></div>
+
+    <div class="section-heading reveal" id="stack"><span class="section-num">8</span><h2>Стек</h2></div>
+    <div class="tech-row reveal">
       <div class="tech-badge">Python</div>
       <div class="tech-badge">LangChain</div>
       <div class="tech-badge">OpenAI API</div>
@@ -446,28 +232,13 @@
       <div class="tech-badge">PostgreSQL</div>
       <div class="tech-badge">Telegram Bot API</div>
     </div>
-
-    <div class="block-sep"></div>
-
-    <div class="section-heading reveal">
-      <span class="section-num">9</span>
-      <h2>Ключевое улучшение кейса</h2>
-    </div>
-    <div class="list-block reveal">
-      <ul>
-        <li>Объясняется <strong>почему</strong> архитектура устроена именно так</li>
-        <li>Предприниматель понимает бизнес-логику</li>
-        <li>Технарь получает детали реализации</li>
-        <li>Используется конкретная метрика (<strong>ERR</strong>), а не абстрактная «вовлечённость»</li>
-      </ul>
-    </div>
   </article>
 
   <script>
     const hdr = document.getElementById('hdr');
     window.addEventListener('scroll', () => {
       hdr.classList.toggle('scrolled', window.scrollY > 40);
-    }, { passive:true });
+    }, { passive: true });
 
     const reveals = document.querySelectorAll('.reveal');
     const obs = new IntersectionObserver((entries) => {
@@ -477,7 +248,7 @@
           obs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12, rootMargin:'0px 0px -30px 0px' });
+    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
 
     reveals.forEach(el => obs.observe(el));
   </script>
