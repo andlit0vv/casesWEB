@@ -70,24 +70,25 @@
     .flow-step h3{font-size:20px;margin-bottom:6px;color:var(--text)}
     .flow-step p{color:var(--muted)}
 
-    .roadmap-vertical{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:18px;padding:22px 0 4px}
-    .roadmap-vertical::before{content:"";position:absolute;left:4%;right:4%;top:46px;height:1px;background:rgba(255,215,0,.45)}
-    .roadmap-item{position:relative;padding:0 10px 0 0;background:none;border:none;opacity:0;transform:translateY(26px);transition:opacity .45s ease,transform .45s ease}
+    .roadmap-vertical{position:relative;display:flex;flex-direction:column;gap:32px;margin-top:18px;padding:12px 0}
+    .roadmap-vertical::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);background:rgba(255,255,255,.25)}
+    .roadmap-item{position:relative;display:grid;grid-template-columns:1fr 90px 1fr;align-items:center;min-height:132px;opacity:0;transform:translateY(20px);transition:opacity .45s ease,transform .45s ease}
     .roadmap-item.visible{opacity:1;transform:translateY(0)}
-    .roadmap-item::before{content:"";display:block;width:24px;height:24px;border:1px solid var(--accent);border-radius:50%;margin:0 0 18px;background:rgba(255,215,0,.05)}
-    .roadmap-item::after{content:"→";position:absolute;top:0;right:-8px;color:var(--accent);font-size:20px;line-height:24px}
-    .roadmap-item:last-child::after{display:none}
-    .roadmap-item h4{font-size:17px;color:var(--accent);margin-bottom:5px}
-    .roadmap-item p{color:var(--text)}
+    .roadmap-content{max-width:310px}
+    .roadmap-item.left .roadmap-content{grid-column:1;justify-self:end;text-align:right;padding-right:18px}
+    .roadmap-item.right .roadmap-content{grid-column:3;justify-self:start;text-align:left;padding-left:18px}
+    .roadmap-marker{grid-column:2;justify-self:center;width:34px;height:34px;border-radius:50%;border:2px solid var(--accent);background:#000;box-shadow:0 0 0 8px rgba(255,215,0,.08);position:relative;z-index:1}
+    .roadmap-item h4{font-size:18px;color:var(--accent);margin-bottom:6px}
+    .roadmap-item p{color:var(--text);font-size:15px;line-height:1.7}
 
-    .agent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;margin-top:18px}
-    .agent-cell{padding:16px 0;background:none;border:none;border-bottom:1px solid rgba(255,255,255,.1)}
+    .agent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 48px;margin-top:24px}
+    .agent-cell{padding:20px 0;background:none;border:none;border-bottom:1px solid rgba(255,255,255,.1)}
     .agent-cell h4{font-size:20px;color:var(--accent);margin-bottom:8px}
     .agent-cell p{color:var(--text)}
 
     .tech-row{display:flex;flex-wrap:wrap;gap:12px 22px}
     .tech-chip{padding:0;border:none;background:none;font-size:14px;line-height:1.7;color:var(--text)}
-    .tech-chip::before{content:"— ";color:var(--accent)}
+    
 
     .cta-wrap{margin-top:86px;border:1px solid rgba(255,255,255,.16);border-radius:var(--radius);padding:44px 24px;text-align:center;background:linear-gradient(180deg,rgba(44,44,44,.9),rgba(0,0,0,.95))}
     .cta-wrap h3{font-size:clamp(26px,3vw,36px);line-height:1.15;margin-bottom:10px}
@@ -103,12 +104,13 @@
       .header-nav{display:none}
       .nav-toggle{display:grid;place-items:center}
       .case-hero{padding-top:145px}
-      .roadmap-vertical{grid-template-columns:1fr;gap:20px}
-      .roadmap-vertical::before{left:11px;right:auto;top:0;bottom:0;height:auto;width:1px}
-      .roadmap-item{padding-left:40px}
-      .roadmap-item::before{position:absolute;left:0;top:0;margin:0}
-      .roadmap-item::after{content:"↓";right:auto;left:6px;top:28px}
-      .roadmap-item:last-child::after{display:none}
+      .roadmap-vertical{gap:22px}
+      .roadmap-vertical::before{left:18px;transform:none}
+      .roadmap-item{grid-template-columns:36px 1fr;min-height:auto;align-items:flex-start;gap:14px}
+      .roadmap-content{max-width:none}
+      .roadmap-item.left .roadmap-content,
+      .roadmap-item.right .roadmap-content{grid-column:2;justify-self:start;text-align:left;padding:0}
+      .roadmap-marker{grid-column:1;justify-self:center;width:24px;height:24px;box-shadow:0 0 0 5px rgba(255,215,0,.08);margin-top:4px}
       .agent-grid{grid-template-columns:1fr}
     }
   </style>
@@ -207,11 +209,26 @@
 
     <div class="section-heading reveal" id="example"><h2>Пример использования</h2></div>
     <div class="roadmap-vertical">
-      <div class="roadmap-item"><h4>Вход</h4><p>ЦА — предприниматели, задача — продажа услуги автоматизации.</p></div>
-      <div class="roadmap-item"><h4>Планировщик</h4><p>Формирует бриф с логикой «проблема → последствия → решение → призыв».</p></div>
-      <div class="roadmap-item"><h4>Копирайтер</h4><p>Пишет основное сообщение по тезисам и структуре.</p></div>
-      <div class="roadmap-item"><h4>Форматировщик</h4><p>Подготавливает контент к публикации в Telegram.</p></div>
-      <div class="roadmap-item"><h4>Редактор</h4><p>Проводит финальную проверку, после чего менеджер публикует пост.</p></div>
+      <div class="roadmap-item right">
+        <span class="roadmap-marker" aria-hidden="true"></span>
+        <div class="roadmap-content"><h4>Вход</h4><p>ЦА — предприниматели, задача — продажа услуги автоматизации.</p></div>
+      </div>
+      <div class="roadmap-item left">
+        <span class="roadmap-marker" aria-hidden="true"></span>
+        <div class="roadmap-content"><h4>Планировщик</h4><p>Формирует бриф с логикой «проблема → последствия → решение → призыв».</p></div>
+      </div>
+      <div class="roadmap-item right">
+        <span class="roadmap-marker" aria-hidden="true"></span>
+        <div class="roadmap-content"><h4>Копирайтер</h4><p>Пишет основное сообщение по тезисам и структуре.</p></div>
+      </div>
+      <div class="roadmap-item left">
+        <span class="roadmap-marker" aria-hidden="true"></span>
+        <div class="roadmap-content"><h4>Форматировщик</h4><p>Подготавливает контент к публикации в Telegram.</p></div>
+      </div>
+      <div class="roadmap-item right">
+        <span class="roadmap-marker" aria-hidden="true"></span>
+        <div class="roadmap-content"><h4>Редактор</h4><p>Проводит финальную проверку, после чего менеджер публикует пост.</p></div>
+      </div>
     </div>
 
     <div class="block-sep"></div>
