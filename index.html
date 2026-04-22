@@ -20,7 +20,7 @@
       --stroke:rgba(255,255,255,0.18);
       --stroke-accent:rgba(255,215,0,0.45);
       --radius:18px;
-      --content-w:1020px;
+      --content-w:1360px;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
@@ -42,12 +42,12 @@
     .mobile-nav{display:none;position:absolute;top:64px;right:16px;left:16px;background:#000;border:1px solid var(--stroke);border-radius:14px;padding:10px;gap:8px;flex-direction:column}
     .mobile-nav.open{display:flex}
 
-    .case-hero{position:relative;z-index:10;padding:190px clamp(20px,5vw,60px) 56px;max-width:1100px;margin:0 auto}
+    .case-hero{position:relative;z-index:10;padding:190px clamp(20px,5vw,60px) 56px;max-width:var(--content-w);margin:0 auto}
     .case-title{font-size:clamp(36px,5.2vw,72px);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin-bottom:26px}
     .case-title .hi{color:var(--accent)}
     .case-lead{font-size:clamp(18px,1.8vw,22px);color:var(--text);line-height:1.9;max-width:780px;padding-left:20px;border-left:2px solid var(--accent-soft)}
 
-    .hero-results{margin-top:42px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px}
+    .hero-results{margin-top:22px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px}
     .metric-card{padding:0;min-height:auto;background:none;border:none}
     .metric-value{font-size:35px;font-weight:800;line-height:1;color:var(--accent);margin-bottom:10px}
     .metric-note{font-size:14px;color:var(--text);line-height:1.7}
@@ -70,9 +70,10 @@
     .flow-step h3{font-size:20px;margin-bottom:6px;color:var(--text)}
     .flow-step p{color:var(--muted)}
 
-    .roadmap-vertical{position:relative;display:flex;flex-direction:column;gap:32px;margin-top:18px;padding:12px 0}
-    .roadmap-vertical::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);background:rgba(255,255,255,.25)}
-    .roadmap-item{position:relative;display:grid;grid-template-columns:1fr 90px 1fr;align-items:center;min-height:132px;opacity:0;transform:translateY(20px);transition:opacity .45s ease,transform .45s ease}
+    .roadmap-vertical{position:relative;display:flex;flex-direction:column;gap:32px;margin-top:18px;padding:12px 0;overflow:hidden}
+    .roadmap-vertical::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);background:rgba(255,255,255,.25);z-index:0}
+    .roadmap-vertical::after{content:"";position:absolute;left:50%;top:0;width:14px;height:14px;border-radius:50%;background:var(--accent);transform:translate(-50%,0);box-shadow:0 0 0 7px rgba(255,215,0,.14);z-index:0;animation:timeline-progress 4.5s ease-in-out infinite}
+    .roadmap-item{position:relative;display:grid;grid-template-columns:1fr 90px 1fr;align-items:center;min-height:132px;opacity:0;transform:translateY(20px);transition:opacity .45s ease,transform .45s ease;z-index:1}
     .roadmap-item.visible{opacity:1;transform:translateY(0)}
     .roadmap-content{max-width:310px}
     .roadmap-item.left .roadmap-content{grid-column:1;justify-self:end;text-align:right;padding-right:18px}
@@ -80,32 +81,30 @@
     .roadmap-marker{grid-column:2;justify-self:center;width:34px;height:34px;border-radius:50%;border:2px solid var(--accent);background:#000;box-shadow:0 0 0 8px rgba(255,215,0,.08);position:relative;z-index:1}
     .roadmap-item h4{font-size:18px;color:var(--accent);margin-bottom:6px}
     .roadmap-item p{color:var(--text);font-size:15px;line-height:1.7}
-    .expand-btn{margin-top:8px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:var(--text);font-size:12px;line-height:1;padding:8px 14px;border-radius:999px;cursor:pointer;transition:background .2s,border-color .2s}
-    .expand-btn:hover{border-color:var(--stroke-accent);background:rgba(255,215,0,.08)}
+    .expand-btn{margin-top:10px;border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.04);color:var(--text);font-size:14px;line-height:1;padding:11px 20px;border-radius:999px;cursor:pointer;transition:background .2s,border-color .2s,opacity .2s;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+    .expand-btn:hover{border-color:var(--stroke-accent);background:rgba(255,215,0,.12);opacity:.92}
     .step-dropdown{max-height:0;opacity:0;overflow:hidden;transition:max-height .28s ease,opacity .24s ease;margin-top:0}
     .step-dropdown p{font-size:13px;line-height:1.6;color:#9CA3AF}
     .step-dropdown.open{max-height:120px;opacity:1;margin-top:10px}
 
-    .architecture-system{position:relative;max-width:760px;min-height:430px;margin:28px auto 0}
-    .architecture-orbit{position:absolute;left:50%;top:50%;width:min(88%,670px);aspect-ratio:1/1;transform:translate(-50%,-50%);border-radius:50%;border:3px dashed rgba(255,215,0,.9);background:none;opacity:.95;z-index:3;pointer-events:none;animation:spin-orbit 14s linear infinite}
-    .architecture-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:148px;height:148px;border-radius:50%;border:2px dashed rgba(255,215,0,.9);background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.2),transparent 58%),var(--accent-soft);display:grid;place-items:center;z-index:2}
-    .architecture-core span{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
-    .architecture-agents{position:absolute;inset:0}
-    .agent-node{position:absolute;width:min(40%,250px);padding:14px 16px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(44,44,44,.72);box-shadow:0 10px 28px rgba(0,0,0,.28)}
+    .architecture-system{position:relative;max-width:860px;min-height:460px;margin:28px auto 0}
+    .architecture-orbit{position:absolute;left:50%;top:50%;width:320px;aspect-ratio:1/1;transform:translate(-50%,-50%);border-radius:50%;border:3px dashed rgba(255,215,0,.78);background:none;opacity:.9;z-index:1;pointer-events:none;animation:spin-orbit 14s linear infinite}
+    .architecture-agents{position:absolute;inset:0;z-index:3}
+    .agent-node{position:absolute;width:240px;padding:14px 16px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(44,44,44,.72);box-shadow:0 10px 28px rgba(0,0,0,.28)}
     .agent-node h4{font-size:16px;color:var(--accent);margin-bottom:4px}
     .agent-node p{font-size:13px;line-height:1.6;color:var(--text);margin:0}
-    .agent-node--tl{top:10px;left:6%}
-    .agent-node--bl{bottom:10px;left:6%}
-    .agent-node--tr{top:10px;right:6%}
-    .agent-node--br{bottom:10px;right:6%}
-    .arch-link{position:absolute;left:50%;top:50%;height:1px;transform-origin:left center;background:linear-gradient(90deg,rgba(255,215,0,.45),rgba(255,215,0,.08));opacity:.55;z-index:1}
-    .arch-link--tl{width:210px;transform:translate(-6px,-6px) rotate(-146deg)}
-    .arch-link--bl{width:210px;transform:translate(-6px,6px) rotate(146deg)}
-    .arch-link--tr{width:210px;transform:translate(6px,-6px) rotate(-34deg)}
-    .arch-link--br{width:210px;transform:translate(6px,6px) rotate(34deg)}
+    .agent-node--tl{top:12px;left:0}
+    .agent-node--bl{bottom:12px;left:0}
+    .agent-node--tr{top:12px;right:0}
+    .agent-node--br{bottom:12px;right:0}
     @keyframes spin-orbit {
       from { transform:translate(-50%,-50%) rotate(0deg); }
       to { transform:translate(-50%,-50%) rotate(360deg); }
+    }
+    @keyframes timeline-progress {
+      0% { top: 0; opacity: .7; }
+      50% { opacity: 1; }
+      100% { top: calc(100% - 14px); opacity: .7; }
     }
 
     .tech-row{display:flex;flex-wrap:wrap;gap:12px 22px}
@@ -128,32 +127,25 @@
       .case-hero{padding-top:145px}
       .roadmap-vertical{gap:22px}
       .roadmap-vertical::before{left:18px;transform:none}
+      .roadmap-vertical::after{left:18px;transform:translate(-50%,0)}
       .roadmap-item{grid-template-columns:36px 1fr;min-height:auto;align-items:flex-start;gap:14px}
       .roadmap-content{max-width:none}
       .roadmap-item.left .roadmap-content,
       .roadmap-item.right .roadmap-content{grid-column:2;justify-self:start;text-align:left;padding:0}
       .roadmap-marker{grid-column:1;justify-self:center;width:24px;height:24px;box-shadow:0 0 0 5px rgba(255,215,0,.08);margin-top:4px}
       .architecture-system{min-height:560px}
-      .architecture-orbit{width:min(94%,620px)}
-      .architecture-core{width:128px;height:128px}
+      .architecture-orbit{width:270px}
       .agent-node{width:min(42%,220px)}
       .agent-node--tl{top:18px;left:0}
       .agent-node--tr{top:18px;right:0}
       .agent-node--bl{bottom:18px;left:0}
       .agent-node--br{bottom:18px;right:0}
-      .arch-link{width:170px}
-      .arch-link--tl{transform:translate(-8px,-8px) rotate(-147deg)}
-      .arch-link--bl{transform:translate(-8px,8px) rotate(147deg)}
-      .arch-link--tr{transform:translate(8px,-8px) rotate(-33deg)}
-      .arch-link--br{transform:translate(8px,8px) rotate(33deg)}
     }
     @media (max-width:640px){
       .architecture-system{min-height:640px}
-      .architecture-orbit{display:none}
-      .architecture-core{top:49%}
+      .architecture-orbit{width:220px}
       .architecture-agents{display:flex;flex-direction:column;justify-content:space-between;padding-top:8px}
       .agent-node{position:relative;width:100%;left:auto;right:auto;top:auto;bottom:auto;margin:12px 0}
-      .arch-link{display:none}
     }
   </style>
 </head>
@@ -186,20 +178,7 @@
     <h1 class="case-title reveal">Мультиагентная <br> система для <span class="hi">SMM</span></h1>
     <p class="case-lead reveal">К нам обратилось маркетинговое агентство (NDA), управляющее 23 Telegram-каналами разных тематик. Подготовка одного поста занимала у них около часа, что существенно ограничивало масштабирование</p>
 
-    <div class="hero-results reveal" aria-label="Ключевые результаты">
-      <div class="metric-card">
-        <div class="metric-value">Скорость x10</div>
-        <div class="metric-note">Время создания поста сократилось с 50 минут до 5</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-value">−80% Рутины</div>
-        <div class="metric-note">Человеку оставалось только посмотреть результат</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-value">x1.3 ERR</div>
-        <div class="metric-note">Увеличили вовлеченность за счет качества контента </div>
-      </div>
-    </div>
+
   </div>
 
   <div class="section-divider"></div>
@@ -242,11 +221,6 @@
     <div class="section-heading reveal" id="architecture"><h2>Архитектура (цепочка агентов)</h2></div>
     <div class="architecture-system reveal" aria-label="Диаграмма мультиагентной архитектуры">
       <span class="architecture-orbit" aria-hidden="true"></span>
-      <span class="arch-link arch-link--tl" aria-hidden="true"></span>
-      <span class="arch-link arch-link--bl" aria-hidden="true"></span>
-      <span class="arch-link arch-link--tr" aria-hidden="true"></span>
-      <span class="arch-link arch-link--br" aria-hidden="true"></span>
-      <div class="architecture-core"><span>Core AI</span></div>
       <div class="architecture-agents">
         <article class="agent-node agent-node--tl"><h4>Planner Agent</h4><p>Формирует логичную структуру и тезисы из входных данных.</p></article>
         <article class="agent-node agent-node--bl"><h4>Operator Agent</h4><p>Создаёт основной текст по брифу без потери контекста.</p></article>
@@ -261,23 +235,41 @@
     <div class="roadmap-vertical">
       <div class="roadmap-item right">
         <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Ввод параметров</h4><p>Пользователь задаёт исходные данные: целевая аудитория, тема поста и задача.</p><button class="expand-btn" type="button" aria-expanded="false">Пример</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
+        <div class="roadmap-content"><h4>Ввод параметров</h4><p>Пользователь задаёт исходные данные: целевая аудитория, тема поста и задача.</p><button class="expand-btn" type="button" aria-expanded="false">ПРИМЕР</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
       </div>
       <div class="roadmap-item left">
         <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Сборка брифа</h4><p>Агент-планировщик анализирует задачу, определяет структуру поста и ключевые тезисы.</p><button class="expand-btn" type="button" aria-expanded="false">Пример</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
+        <div class="roadmap-content"><h4>Сборка брифа</h4><p>Агент-планировщик анализирует задачу, определяет структуру поста и ключевые тезисы.</p><button class="expand-btn" type="button" aria-expanded="false">ПРИМЕР</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
       </div>
       <div class="roadmap-item right">
         <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Генерация текста</h4><p>Агент-копирайтер пишет основной текст на основе брифа и логики сообщения</p><button class="expand-btn" type="button" aria-expanded="false">Пример</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
+        <div class="roadmap-content"><h4>Генерация текста</h4><p>Агент-копирайтер пишет основной текст на основе брифа и логики сообщения</p><button class="expand-btn" type="button" aria-expanded="false">ПРИМЕР</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
       </div>
       <div class="roadmap-item left">
         <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Адаптация под автора</h4><p>SMM-агент форматирует текст: смотрит на Tone Of Voice и разбивает на абзацы и добавляет акценты</p><button class="expand-btn" type="button" aria-expanded="false">Пример</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
+        <div class="roadmap-content"><h4>Адаптация под автора</h4><p>SMM-агент форматирует текст: смотрит на Tone Of Voice и разбивает на абзацы и добавляет акценты</p><button class="expand-btn" type="button" aria-expanded="false">ПРИМЕР</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
       </div>
       <div class="roadmap-item right">
         <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Финальная редактура</h4><p>Агент-редактор улучшает читаемость, выравнивает стиль и усиливает формулировки</p><button class="expand-btn" type="button" aria-expanded="false">Пример</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
+        <div class="roadmap-content"><h4>Финальная редактура</h4><p>Агент-редактор улучшает читаемость, выравнивает стиль и усиливает формулировки</p><button class="expand-btn" type="button" aria-expanded="false">ПРИМЕР</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
+      </div>
+    </div>
+
+    <div class="block-sep"></div>
+
+    <div class="section-heading reveal" id="results"><h2>Результаты</h2></div>
+    <div class="hero-results reveal" aria-label="Ключевые результаты">
+      <div class="metric-card">
+        <div class="metric-value">Скорость x10</div>
+        <div class="metric-note">Время создания поста сократилось с 50 минут до 5</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">−80% Рутины</div>
+        <div class="metric-note">Человеку оставалось только посмотреть результат</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">x1.3 ERR</div>
+        <div class="metric-note">Увеличили вовлеченность за счет качества контента </div>
       </div>
     </div>
 
@@ -345,7 +337,7 @@
         const isOpen = dropdown.classList.toggle('open');
         button.setAttribute('aria-expanded', String(isOpen));
         dropdown.setAttribute('aria-hidden', String(!isOpen));
-        button.textContent = isOpen ? 'Collapse' : 'Expand';
+        button.textContent = isOpen ? 'СКРЫТЬ' : 'ПРИМЕР';
       });
     });
   </script>
