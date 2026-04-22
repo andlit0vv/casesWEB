@@ -90,20 +90,19 @@
     .step-dropdown p{font-size:13px;line-height:1.6;color:#D1D5DB;background:rgba(20,20,20,.95);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 14px}
     .step-dropdown.open{max-height:220px;opacity:1;margin-top:10px}
 
-    .architecture-system{position:relative;max-width:860px;min-height:500px;margin:28px auto 0}
-    .architecture-orbit{position:absolute;left:50%;top:50%;width:350px;aspect-ratio:1/1;transform:translate(-50%,-50%);border-radius:50%;border:3px dashed rgba(255,215,0,.78);background:none;opacity:.9;z-index:1;pointer-events:none;animation:spin-orbit 14s linear infinite}
+    .architecture-system{position:relative;max-width:920px;min-height:690px;margin:28px auto 0}
+    .architecture-road{position:absolute;inset:0;z-index:1;pointer-events:none}
+    .architecture-road path{fill:none;stroke:rgba(255,255,255,.72);stroke-width:3.4;stroke-dasharray:9 8;stroke-linecap:round;stroke-linejoin:round}
+    .architecture-road circle{fill:#000;stroke:rgba(255,255,255,.8);stroke-width:3;stroke-dasharray:5 5}
     .architecture-agents{position:absolute;inset:0;z-index:3}
-    .agent-node{position:absolute;width:248px;padding:14px 16px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(44,44,44,.82);box-shadow:0 10px 28px rgba(0,0,0,.28)}
+    .agent-node{position:absolute;width:258px;padding:14px 16px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(44,44,44,.82);box-shadow:0 10px 28px rgba(0,0,0,.28);opacity:0;transform:translateY(26px) scale(.98);transition:opacity .55s ease,transform .55s ease}
+    .agent-node.visible{opacity:1;transform:translateY(0) scale(1)}
     .agent-node h4{font-size:16px;color:var(--accent);margin-bottom:4px}
     .agent-node p{font-size:13px;line-height:1.6;color:var(--text);margin:0}
-    .agent-node--tl{top:56px;left:8px}
-    .agent-node--bl{bottom:56px;left:8px}
-    .agent-node--tr{top:56px;right:8px}
-    .agent-node--br{bottom:56px;right:8px}
-    @keyframes spin-orbit {
-      from { transform:translate(-50%,-50%) rotate(0deg); }
-      to { transform:translate(-50%,-50%) rotate(360deg); }
-    }
+    .agent-node--tl{top:46px;left:20px}
+    .agent-node--bl{top:336px;left:20px}
+    .agent-node--tr{top:186px;right:20px}
+    .agent-node--br{top:476px;right:20px}
     @keyframes timeline-progress {
       0% { top: 0; opacity: .7; }
       50% { opacity: 1; }
@@ -137,13 +136,13 @@
       .roadmap-item.left .roadmap-content,
       .roadmap-item.right .roadmap-content{grid-column:2;justify-self:start;text-align:left;padding:0}
       .roadmap-marker{grid-column:1;justify-self:center;width:24px;height:24px;box-shadow:0 0 0 5px rgba(255,215,0,.08);margin-top:4px}
-      .architecture-system{min-height:680px}
+      .architecture-system{min-height:760px}
       .architecture-road{inset:10px 0 0}
       .agent-node{width:min(47%,250px)}
       .agent-node--tl{top:22px;left:0}
-      .agent-node--tr{top:205px;right:0}
-      .agent-node--bl{top:400px;left:0}
-      .agent-node--br{top:560px;right:0}
+      .agent-node--tr{top:200px;right:0}
+      .agent-node--bl{top:390px;left:0}
+      .agent-node--br{top:590px;right:0}
     }
     @media (max-width:640px){
       .architecture-system{min-height:auto}
@@ -226,11 +225,15 @@
 
     <div class="section-heading reveal" id="architecture"><h2>Архитектура (цепочка агентов)</h2></div>
     <div class="architecture-system reveal" aria-label="Диаграмма мультиагентной архитектуры">
-      <svg class="architecture-road" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M 120 90 C 300 40, 350 220, 530 240 S 760 380, 880 540"></path>
-        <circle cx="120" cy="90" r="18"></circle>
-        <circle cx="530" cy="240" r="18"></circle>
-        <circle cx="880" cy="540" r="18"></circle>
+      <svg class="architecture-road" viewBox="0 0 1000 720" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M 160 125
+                 C 260 60, 365 115, 480 245
+                 C 560 330, 450 350, 330 435
+                 C 245 500, 370 560, 830 525"></path>
+        <circle cx="160" cy="125" r="20"></circle>
+        <circle cx="480" cy="245" r="20"></circle>
+        <circle cx="330" cy="435" r="20"></circle>
+        <circle cx="830" cy="525" r="20"></circle>
       </svg>
       <div class="architecture-agents">
         <article class="agent-node agent-node--tl"><h4>Planner Agent</h4><p>Формирует логичную структуру и тезисы из входных данных.</p></article>
@@ -363,7 +366,7 @@
       entries.forEach((entry) => {
         entry.target.classList.toggle('visible', entry.isIntersecting);
       });
-    }, { threshold: 0.45, rootMargin: '0px 0px -5% 0px' });
+    }, { threshold: 0.2, rootMargin: '-8% 0px -8% 0px' });
     architectureNodes.forEach((node) => architectureObs.observe(node));
   </script>
 </body>
