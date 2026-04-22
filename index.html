@@ -28,14 +28,14 @@
     body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:150;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");opacity:.09;mix-blend-mode:soft-light}
     .page-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;--cx:50%;--cy:50%;background:#000}
     .grid-base,.grid-reveal{position:absolute;inset:0}
-    .grid-base{z-index:1;opacity:0}
-    .grid-reveal{z-index:2;opacity:.38;-webkit-mask-image:radial-gradient(350px circle at var(--cx) var(--cy),black 0%,transparent 100%);mask-image:radial-gradient(350px circle at var(--cx) var(--cy),black 0%,transparent 100%)}
+    .grid-base{z-index:1;opacity:.07}
+    .grid-reveal{z-index:2;opacity:.62;-webkit-mask-image:radial-gradient(340px circle at var(--cx) var(--cy),black 0%,transparent 100%);mask-image:radial-gradient(340px circle at var(--cx) var(--cy),black 0%,transparent 100%)}
     .grid-base svg,.grid-reveal svg{width:100%;height:100%;display:block}
     .bg-orbs{position:absolute;inset:0;z-index:0}
     .bg-orb{position:absolute;border-radius:50%;filter:blur(90px);animation:orbFloat ease-in-out infinite alternate}
-    .bg-orb--gold{width:22%;height:22%;right:-13%;top:-16%;background:radial-gradient(circle,rgba(255,215,0,.03) 0%,rgba(255,175,40,.01) 48%,transparent 70%);animation-duration:20s}
-    .bg-orb--amber{width:20%;height:20%;left:-10%;bottom:-15%;background:radial-gradient(circle,rgba(255,170,0,.025) 0%,rgba(245,128,20,.01) 50%,transparent 70%);animation-duration:24s;animation-direction:reverse}
-    .bg-orb--sun{width:12%;height:12%;right:12%;top:-5%;background:radial-gradient(circle,rgba(255,224,120,.015) 0%,transparent 68%);filter:blur(55px);animation-duration:15s}
+    .bg-orb--gold{width:22%;height:22%;right:-13%;top:-16%;background:radial-gradient(circle,rgba(255,215,0,.12) 0%,rgba(255,175,40,.04) 48%,transparent 70%);animation-duration:20s}
+    .bg-orb--amber{width:20%;height:20%;left:-10%;bottom:-15%;background:radial-gradient(circle,rgba(255,170,0,.1) 0%,rgba(245,128,20,.03) 50%,transparent 70%);animation-duration:24s;animation-direction:reverse}
+    .bg-orb--sun{width:12%;height:12%;right:12%;top:-5%;background:radial-gradient(circle,rgba(255,224,120,.08) 0%,transparent 68%);filter:blur(55px);animation-duration:15s}
     @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}100%{transform:translate(2%,-3%) scale(1.06)}}
     .page-grid{display:none}
 
@@ -65,7 +65,7 @@
     .metric-value{font-size:clamp(34px,3vw,44px);font-weight:800;line-height:1;color:var(--accent);margin-bottom:8px}
     .metric-note{font-size:14px;color:var(--text);line-height:1.55}
 
-    .section-divider{display:block;max-width:var(--content-w);margin:0 auto 24px;border-top:1px solid rgba(255,255,255,.14);padding:0 clamp(20px,5vw,60px)}
+    .section-divider{display:none}
     .case-body{position:relative;z-index:10;max-width:var(--content-w);margin:0 auto;padding:0 clamp(20px,5vw,60px) 140px}
     .section-heading{margin:76px 0 24px}
     .section-heading:first-child{margin-top:0}
@@ -101,18 +101,14 @@
     .step-dropdown p{font-size:13px;line-height:1.6;color:#D1D5DB;background:rgba(20,20,20,.95);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 14px}
     .step-dropdown.open{max-height:220px;opacity:1;margin-top:10px}
 
-    .architecture-system{position:relative;max-width:920px;margin:28px auto 0;padding:26px;border-radius:20px;background:#111;overflow:hidden}
-    .architecture-path{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
-    .architecture-path path{stroke:rgba(255,255,255,.85);stroke-width:2;stroke-dasharray:8 6;fill:none;transition:stroke-dashoffset .08s linear}
-    .architecture-agents{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 58px;z-index:2}
-    .agent-node{position:relative;width:100%;padding:20px 22px;border:1px solid rgba(255,255,255,.2);border-radius:16px;background:#1e1e1e;opacity:0;transform:translateY(20px);transition:opacity .35s ease,transform .35s ease}
-    .agent-node.visible{opacity:1;transform:translateY(0)}
-    .agent-node h4{font-size:18px;color:var(--accent);font-weight:800;margin-bottom:6px}
-    .agent-node p{font-size:14px;line-height:1.6;color:var(--text);margin:0}
-    .agent-node:nth-child(1){grid-column:1;grid-row:1}
-    .agent-node:nth-child(2){grid-column:2;grid-row:2}
-    .agent-node:nth-child(3){grid-column:1;grid-row:3}
-    .agent-node:nth-child(4){grid-column:2;grid-row:4}
+    .architecture-system{position:relative;max-width:920px;margin:28px auto 0}
+    .architecture-road{display:none}
+    .architecture-agents{position:relative;display:flex;flex-direction:column;gap:14px;z-index:3}
+    .agent-node{position:relative;width:100%;padding:18px 20px;border:1px solid rgba(255,255,255,.32);border-radius:14px;background:transparent;box-shadow:none;opacity:0;transform:translateY(26px) scale(.98);transition:opacity .55s ease,transform .55s ease}
+    .agent-node.visible{opacity:1;transform:translateY(0) scale(1)}
+    .agent-node h4{font-size:16px;color:var(--accent);margin-bottom:4px}
+    .agent-node p{font-size:13px;line-height:1.6;color:var(--text);margin:0}
+    .agent-node--tl,.agent-node--bl,.agent-node--tr,.agent-node--br{top:auto;left:auto;right:auto}
     @keyframes timeline-progress {
       0% { top: 0; opacity: .7; }
       50% { opacity: 1; }
@@ -146,13 +142,15 @@
       .roadmap-item.left .roadmap-content,
       .roadmap-item.right .roadmap-content{grid-column:2;justify-self:start;text-align:left;padding:0}
       .roadmap-marker{grid-column:1;justify-self:center;width:24px;height:24px;box-shadow:0 0 0 5px rgba(255,215,0,.08);margin-top:4px}
-      .architecture-system{padding:18px}
-      .architecture-agents{grid-template-columns:1fr;gap:16px}
-      .agent-node:nth-child(n){grid-column:1;grid-row:auto}
+      .architecture-system{min-height:auto}
+      .architecture-road{display:none}
+      .agent-node{width:100%}
     }
     @media (max-width:640px){
-      .architecture-system{padding:16px}
-      .architecture-agents{position:relative;display:grid;grid-template-columns:1fr;gap:14px}
+      .architecture-system{min-height:auto}
+      .architecture-road{display:none}
+      .architecture-agents{position:relative;display:flex;flex-direction:column;gap:14px}
+      .agent-node{position:relative;width:100%;left:auto;right:auto;top:auto;bottom:auto;margin:0;opacity:1;transform:none}
     }
   </style>
 </head>
@@ -168,7 +166,7 @@
       <svg id="svgBase">
         <defs>
           <pattern id="grid-base-pattern" width="44" height="44" patternUnits="userSpaceOnUse">
-            <path d="M 44 0 L 0 0 0 44" fill="none" stroke="rgba(255,190,70,0.25)" stroke-width="0.82"/>
+            <path d="M 44 0 L 0 0 0 44" fill="none" stroke="rgba(255,190,70,1)" stroke-width="0.82"/>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#grid-base-pattern)"/>
@@ -179,7 +177,7 @@
       <svg id="svgReveal">
         <defs>
           <pattern id="grid-reveal-pattern" width="44" height="44" patternUnits="userSpaceOnUse">
-            <path d="M 44 0 L 0 0 0 44" fill="none" stroke="rgba(255,215,80,0.62)" stroke-width="1.1"/>
+            <path d="M 44 0 L 0 0 0 44" fill="none" stroke="rgba(255,215,80,1)" stroke-width="1.2"/>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#grid-reveal-pattern)"/>
@@ -257,21 +255,45 @@
 
     <div class="section-heading reveal" id="architecture"><h2>Архитектура (цепочка агентов)</h2></div>
     <div class="architecture-system reveal" aria-label="Диаграмма мультиагентной архитектуры">
-      <svg class="architecture-path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <path id="agentChainPath"></path>
-      </svg>
       <div class="architecture-agents">
-        <article class="agent-node"><h4>Planner Agent</h4><p>Формирует логичную структуру и тезисы из входных данных.</p></article>
-        <article class="agent-node"><h4>Formatter Agent</h4><p>Адаптирует стиль под Telegram и усиливает читаемость.</p></article>
-        <article class="agent-node"><h4>Operator Agent</h4><p>Создаёт основной текст по брифу без потери контекста.</p></article>
-        <article class="agent-node"><h4>Editor Agent</h4><p>Проводит финальную валидацию тона и качества.</p></article>
+        <article class="agent-node agent-node--tl"><h4>Planner Agent</h4><p>Формирует логичную структуру и тезисы из входных данных.</p></article>
+        <article class="agent-node agent-node--bl"><h4>Operator Agent</h4><p>Создаёт основной текст по брифу без потери контекста.</p></article>
+        <article class="agent-node agent-node--tr"><h4>Formatter Agent</h4><p>Адаптирует стиль под Telegram и усиливает читаемость.</p></article>
+        <article class="agent-node agent-node--br"><h4>Editor Agent</h4><p>Проводит финальную валидацию тона и качества.</p></article>
       </div>
     </div>
 
     <div class="block-sep"></div>
 
     <div class="section-heading reveal" id="example"><h2>Пример использования</h2></div>
-    <p class="reveal"><strong>Ввод параметров:</strong> пользователь задаёт исходные данные — целевая аудитория, тема и задача поста.</p>
+    <div class="roadmap-vertical">
+      <div class="roadmap-item right">
+        <span class="roadmap-marker" aria-hidden="true"></span>
+        <div class="roadmap-content"><h4>Ввод параметров</h4><p>Пользователь задаёт исходные данные: целевая аудитория, тема поста и задача.</p><div class="step-dropdown open" aria-hidden="false"><p>{
+  "topic": "Когда Telegram-боты вредят продажам",
+  "target_audience": "предприниматели, онлайн-школы, B2B",
+  "goal": "привлечь внимание и повысить экспертность",
+  "platform": "Telegram",
+  "..."
+}</p></div></div>
+      </div>
+      <div class="roadmap-item left">
+        <span class="roadmap-marker" aria-hidden="true"></span>
+        <div class="roadmap-content"><h4>Сборка брифа</h4><p>Агент-планировщик анализирует задачу, определяет структуру поста и ключевые тезисы.</p><div class="step-dropdown open" aria-hidden="false"><p>Готовый бриф с блоками: хук, аргументы, пример, призыв к действию и ограничения по тону.</p></div></div>
+      </div>
+      <div class="roadmap-item right">
+        <span class="roadmap-marker" aria-hidden="true"></span>
+        <div class="roadmap-content"><h4>Генерация текста</h4><p>Агент-копирайтер пишет основной текст на основе брифа и логики сообщения</p><div class="step-dropdown open" aria-hidden="false"><p>Черновик поста в нужной структуре, с логичными переходами и акцентом на ключевую мысль.</p></div></div>
+      </div>
+      <div class="roadmap-item left">
+        <span class="roadmap-marker" aria-hidden="true"></span>
+        <div class="roadmap-content"><h4>Адаптация под автора</h4><p>SMM-агент форматирует текст: смотрит на Tone Of Voice и разбивает на абзацы и добавляет акценты</p><div class="step-dropdown open" aria-hidden="false"><p>Версия под голос автора: короткие абзацы, акценты, понятная подача и корректная ритмика.</p></div></div>
+      </div>
+      <div class="roadmap-item right">
+        <span class="roadmap-marker" aria-hidden="true"></span>
+        <div class="roadmap-content"><h4>Финальная редактура</h4><p>Агент-редактор улучшает читаемость, выравнивает стиль и усиливает формулировки</p><div class="step-dropdown open" aria-hidden="false"><p>Финальный текст без лишнего шума: чистый стиль, выверенные формулировки и готовность к публикации.</p></div></div>
+      </div>
+    </div>
 
     <div class="block-sep"></div>
 
@@ -340,116 +362,21 @@
 
     reveals.forEach(el => obs.observe(el));
 
-    (function () {
-      const architectureSection = document.querySelector('.architecture-system');
-      const architecturePath = document.getElementById('agentChainPath');
-      const architectureNodes = architectureSection ? [...architectureSection.querySelectorAll('.agent-node')] : [];
-      if (!architectureSection || !architecturePath || architectureNodes.length !== 4) return;
-
-      let pathLength = 0;
-      let revealLengths = [0, 0, 0, 0];
-      let ticking = false;
-
-      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-
-      const toLocalPoint = (rect, sectionRect, side) => {
-        if (side === 'left') return { x: rect.left - sectionRect.left, y: rect.top - sectionRect.top + rect.height / 2 };
-        if (side === 'right') return { x: rect.right - sectionRect.left, y: rect.top - sectionRect.top + rect.height / 2 };
-        if (side === 'top') return { x: rect.left - sectionRect.left + rect.width / 2, y: rect.top - sectionRect.top };
-        return { x: rect.left - sectionRect.left + rect.width / 2, y: rect.bottom - sectionRect.top };
-      };
-
-      function findClosestLength(targetPoint) {
-        const samples = 500;
-        let bestLength = 0;
-        let bestDistance = Infinity;
-        for (let i = 0; i <= samples; i += 1) {
-          const len = (pathLength * i) / samples;
-          const point = architecturePath.getPointAtLength(len);
-          const dx = point.x - targetPoint.x;
-          const dy = point.y - targetPoint.y;
-          const dist = dx * dx + dy * dy;
-          if (dist < bestDistance) {
-            bestDistance = dist;
-            bestLength = len;
-          }
-        }
-        return bestLength;
-      }
-
-      function buildPath() {
-        const sectionRect = architectureSection.getBoundingClientRect();
-        const rects = architectureNodes.map((node) => node.getBoundingClientRect());
-        const isMobile = window.matchMedia('(max-width: 640px)').matches;
-
-        let d = '';
-        let checkpoints = [];
-
-        if (isMobile) {
-          const top = toLocalPoint(rects[0], sectionRect, 'bottom');
-          const second = toLocalPoint(rects[1], sectionRect, 'top');
-          const third = toLocalPoint(rects[2], sectionRect, 'top');
-          const fourth = toLocalPoint(rects[3], sectionRect, 'top');
-
-          d = `M ${top.x} ${top.y} C ${top.x} ${top.y + 45}, ${second.x} ${second.y - 45}, ${second.x} ${second.y} ` +
-              `C ${second.x} ${second.y + 45}, ${third.x} ${third.y - 45}, ${third.x} ${third.y} ` +
-              `C ${third.x} ${third.y + 45}, ${fourth.x} ${fourth.y - 45}, ${fourth.x} ${fourth.y}`;
-          checkpoints = [top, second, third, fourth];
-        } else {
-          const p1Out = toLocalPoint(rects[0], sectionRect, 'right');
-          const p2In = toLocalPoint(rects[1], sectionRect, 'left');
-          const p2Out = toLocalPoint(rects[1], sectionRect, 'bottom');
-          const p3In = toLocalPoint(rects[2], sectionRect, 'top');
-          const p3Out = toLocalPoint(rects[2], sectionRect, 'right');
-          const p4In = toLocalPoint(rects[3], sectionRect, 'left');
-
-          d = `M ${p1Out.x} ${p1Out.y} ` +
-              `C ${p1Out.x + 90} ${p1Out.y}, ${p2In.x - 90} ${p2In.y}, ${p2In.x} ${p2In.y} ` +
-              `C ${p2In.x - 70} ${p2In.y}, ${p2Out.x - 70} ${p2Out.y - 35}, ${p2Out.x} ${p2Out.y} ` +
-              `C ${p2Out.x} ${p2Out.y + 80}, ${p3In.x} ${p3In.y - 80}, ${p3In.x} ${p3In.y} ` +
-              `C ${p3In.x} ${p3In.y - 70}, ${p3Out.x + 65} ${p3Out.y - 10}, ${p3Out.x} ${p3Out.y} ` +
-              `C ${p3Out.x + 90} ${p3Out.y}, ${p4In.x - 90} ${p4In.y}, ${p4In.x} ${p4In.y}`;
-          checkpoints = [p1Out, p2In, p3In, p4In];
-        }
-
-        architecturePath.setAttribute('d', d);
-        pathLength = architecturePath.getTotalLength();
-        architecturePath.style.strokeDasharray = `${pathLength} ${pathLength}`;
-        architecturePath.style.strokeDashoffset = String(pathLength);
-
-        revealLengths = checkpoints.map(findClosestLength);
-      }
-
-      function updateAnimation() {
-        const rect = architectureSection.getBoundingClientRect();
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-        const progress = clamp((vh - rect.top) / (vh + rect.height), 0, 1);
-        const drawnLength = pathLength * progress;
-
-        architecturePath.style.strokeDashoffset = String(pathLength - drawnLength);
-
-        architectureNodes.forEach((node, idx) => {
-          node.classList.toggle('visible', drawnLength >= revealLengths[idx] - 12);
-        });
-      }
-
-      function requestTick() {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-          updateAnimation();
-          ticking = false;
-        });
-      }
-
-      buildPath();
-      updateAnimation();
-      window.addEventListener('scroll', requestTick, { passive: true });
-      window.addEventListener('resize', () => {
-        buildPath();
-        requestTick();
+    const roadmapItems = document.querySelectorAll('.roadmap-item');
+    const roadmapObs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle('visible', entry.isIntersecting);
       });
-    })();
+    }, { threshold: 0.3, rootMargin: '0px 0px -10% 0px' });
+    roadmapItems.forEach((item) => roadmapObs.observe(item));
+
+    const architectureNodes = document.querySelectorAll('.architecture-system .agent-node');
+    const architectureObs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle('visible', entry.isIntersecting);
+      });
+    }, { threshold: 0.2, rootMargin: '-8% 0px -8% 0px' });
+    architectureNodes.forEach((node) => architectureObs.observe(node));
 
     (function () {
       const bg = document.getElementById('pageBg');
