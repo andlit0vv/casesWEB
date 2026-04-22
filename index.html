@@ -4,10 +4,10 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Мультиагентная система для SMM · Aivion</title>
-  <meta name="description" content="Кейс о том, как мы сократили производство Telegram-поста с ~50 минут до ~2 минут с мультиагентной архитектурой."/>
+  <meta name="description" content="Кейс о том, как мы сократили производство Telegram-поста с ~60 минут до ~2–3 минут с мультиагентной архитектурой."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Montserrat:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --bg:#000;
@@ -16,229 +16,229 @@
       --accent-soft:rgba(232,146,10,0.10);
       --accent-glow:rgba(232,146,10,0.25);
       --text:#ebebeb;
-      --muted:rgba(235,235,235,0.52);
-      --muted-strong:rgba(235,235,235,0.78);
-      --stroke:rgba(255,255,255,0.08);
-      --stroke-accent:rgba(232,146,10,0.25);
-      --radius:20px;
-      --radius-sm:12px;
-      --transition:cubic-bezier(0.4,0,0.2,1);
+      --muted:rgba(235,235,235,0.56);
+      --muted-strong:rgba(235,235,235,0.82);
+      --stroke:rgba(255,255,255,0.10);
+      --stroke-accent:rgba(232,146,10,0.30);
+      --radius:18px;
       --content-w:1020px;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-serif;font-size:17px;line-height:1.7;overflow-x:hidden}
-    body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");opacity:.10;mix-blend-mode:soft-light}
-    .page-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,#000 0%,#000 12%,#040200 32%,#0a0500 54%,#140900 76%,#1c0d00 100%)}
-    .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:orbFloat ease-in-out infinite alternate}
-    .orb-1{width:70vw;height:70vw;right:-20%;bottom:-20%;background:radial-gradient(circle,rgba(232,146,10,.16) 0%,rgba(200,100,5,.06) 45%,transparent 70%);filter:blur(80px);animation-duration:28s}
-    .orb-2{width:50vw;height:50vw;left:-15%;top:35%;background:radial-gradient(circle,rgba(16,185,129,.10) 0%,transparent 65%);filter:blur(100px);animation-duration:34s;animation-direction:reverse}
-    .orb-3{width:40vw;height:25vw;right:5%;top:8%;background:radial-gradient(ellipse,rgba(245,168,34,.09) 0%,transparent 65%);filter:blur(70px);animation-duration:22s}
-    @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}100%{transform:translate(2%,-3%) scale(1.05)}}
-    .page-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(232,146,10,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(232,146,10,.028) 1px,transparent 1px);background-size:60px 60px;mask-image:linear-gradient(180deg,transparent 0%,transparent 20%,rgba(0,0,0,.4) 55%,rgba(0,0,0,.7) 100%)}
+    body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-serif;font-size:17px;line-height:1.68;overflow-x:hidden}
+    .page-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,#000 0%,#040200 45%,#120700 100%)}
+    .page-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(232,146,10,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(232,146,10,.03) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.8) 30%,rgba(0,0,0,.95) 100%)}
 
-    header{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px clamp(16px,4vw,48px) 14px;transition:border-color .4s,background .4s}
-    header.scrolled{background:rgba(0,0,0,.78);backdrop-filter:blur(18px);border-bottom:1px solid var(--stroke)}
-    .header-top{display:flex;align-items:center;justify-content:space-between}
-    .header-logo{font-family:"Montserrat",sans-serif;font-weight:700;font-size:18px;color:var(--text);text-decoration:none}
+    header{position:fixed;top:0;left:0;right:0;z-index:100;padding:15px clamp(16px,4vw,48px);transition:border-color .35s,background .35s}
+    header.scrolled{background:rgba(0,0,0,.84);backdrop-filter:blur(16px);border-bottom:1px solid var(--stroke)}
+    .header-top{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1200px;margin:0 auto}
+    .header-logo{font-family:"Montserrat",sans-serif;font-weight:700;font-size:18px;color:var(--text);text-decoration:none;flex-shrink:0}
     .header-logo span{color:var(--accent)}
 
-    .nav-flyout{position:relative}
-    .nav-toggle{width:44px;height:44px;border-radius:12px;border:1px solid var(--stroke-accent);background:rgba(0,0,0,.45);color:var(--text);display:grid;place-items:center;cursor:pointer;transition:.2s var(--transition)}
-    .nav-toggle:hover{border-color:var(--accent);box-shadow:0 0 16px rgba(232,146,10,.25);color:var(--accent)}
-    .nav-toggle .arrow{font-size:19px;display:inline-block;transition:transform .25s var(--transition)}
-    .nav-flyout:hover .arrow{transform:translateX(-3px)}
-    .header-nav-grid{position:absolute;top:54px;left:0;display:grid;gap:8px;min-width:220px;padding:10px;border:1px solid var(--stroke-accent);background:rgba(0,0,0,.92);border-radius:12px;backdrop-filter:blur(12px);opacity:0;transform:translateY(-6px);pointer-events:none;transition:.2s var(--transition)}
-    .nav-flyout:hover .header-nav-grid,.nav-flyout:focus-within .header-nav-grid{opacity:1;transform:translateY(0);pointer-events:auto}
-    .nav-link{padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.08);text-decoration:none;color:var(--muted-strong);font-size:12px;font-family:"Montserrat",sans-serif;letter-spacing:.05em;text-transform:uppercase}
-    .nav-link:hover{border-color:var(--accent);background:rgba(232,146,10,.10);color:var(--text)}
+    .header-nav{display:flex;align-items:center;gap:8px}
+    .nav-link{padding:8px 11px;border-radius:999px;border:1px solid transparent;text-decoration:none;color:var(--muted-strong);font-size:12px;font-family:"Montserrat",sans-serif;letter-spacing:.04em;text-transform:uppercase;transition:.2s}
+    .nav-link:hover{border-color:var(--stroke-accent);background:var(--accent-soft);color:var(--text)}
 
-    .case-hero{position:relative;z-index:10;padding:190px clamp(20px,5vw,60px) 60px;max-width:1100px;margin:0 auto}
-    .case-title{font-size:clamp(34px,5.2vw,66px);font-weight:700;letter-spacing:-.055em;line-height:1;margin-bottom:20px}
+    .nav-toggle{display:none;width:42px;height:42px;border-radius:10px;border:1px solid var(--stroke-accent);background:rgba(0,0,0,.45);color:var(--text);font-size:20px;cursor:pointer}
+    .mobile-nav{display:none;position:absolute;top:64px;right:16px;left:16px;background:rgba(0,0,0,.92);border:1px solid var(--stroke-accent);border-radius:14px;padding:10px;gap:8px;flex-direction:column}
+    .mobile-nav.open{display:flex}
+
+    .case-hero{position:relative;z-index:10;padding:170px clamp(20px,5vw,60px) 40px;max-width:1100px;margin:0 auto}
+    .case-title{font-size:clamp(34px,5.2vw,66px);font-weight:700;letter-spacing:-.055em;line-height:1.03;margin-bottom:20px}
     .case-title .hi{color:var(--accent)}
-    .case-lead{font-size:clamp(17px,1.8vw,21px);color:var(--muted-strong);line-height:1.65;max-width:760px;padding-left:20px;border-left:1px solid rgba(255,255,255,.12)}
+    .case-lead{font-size:clamp(17px,1.8vw,21px);color:var(--muted-strong);line-height:1.6;max-width:780px;padding-left:16px;border-left:1px solid rgba(255,255,255,.14)}
 
-    .section-divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,146,10,.18),transparent);margin:44px 0 60px;position:relative;z-index:10}
+    .hero-results{margin-top:28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .metric-card{padding:12px 14px;border-radius:12px;border:1px solid var(--stroke-accent);background:linear-gradient(180deg,rgba(232,146,10,.12),rgba(255,255,255,.02));min-height:82px}
+    .metric-value{font-size:26px;font-weight:700;line-height:1;color:var(--accent-strong);margin-bottom:6px}
+    .metric-note{font-size:13px;color:var(--muted-strong);line-height:1.4}
+
+    .section-divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,146,10,.24),transparent);margin:20px 0 46px;position:relative;z-index:10}
     .case-body{position:relative;z-index:10;max-width:var(--content-w);margin:0 auto;padding:0 clamp(20px,5vw,60px) 120px}
-    .section-heading{display:flex;align-items:flex-start;gap:16px;margin:48px 0 20px}
+    .section-heading{margin:44px 0 18px}
     .section-heading:first-child{margin-top:0}
-    .section-num{flex-shrink:0;width:36px;height:36px;background:var(--accent-soft);border:1px solid var(--stroke-accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:"Montserrat",sans-serif;font-size:12px;font-weight:700;color:var(--accent);margin-top:2px}
-    .section-heading h2{font-size:clamp(21px,2.5vw,32px);font-weight:700;letter-spacing:-.045em;line-height:1.07}
-    .case-body p{color:var(--muted-strong);margin-bottom:16px}
-    .block-sep{border-top:1px solid rgba(255,255,255,.06);margin:28px 0}
+    .section-heading h2{font-size:clamp(23px,2.8vw,34px);font-weight:700;letter-spacing:-.04em;line-height:1.1}
+    .case-body p{color:var(--muted-strong);margin-bottom:14px}
+    .block-sep{border-top:1px solid rgba(255,255,255,.07);margin:30px 0}
 
-    .bold-accent-smm strong{font-weight:700;color:var(--text)}
-    .bold-accent-smm .smm{color:var(--accent)}
-    .glow-underline{display:inline-block;padding-bottom:10px;border-bottom:1px solid rgba(232,146,10,.65);box-shadow:0 8px 22px -12px rgba(232,146,10,.95)}
+    .problem-accent{color:var(--accent-strong);font-weight:600}
 
-    .goal-label{font-family:"Montserrat",sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-    .goal-card{padding:20px;border:1px solid var(--stroke-accent);border-radius:14px;background:rgba(255,255,255,.03);position:relative}
-    .goal-card::after{content:"";position:absolute;left:20px;right:20px;bottom:10px;height:1px;background:rgba(232,146,10,.55);box-shadow:0 0 16px rgba(232,146,10,.6)}
+    .solution-flow{display:grid;gap:12px;margin-top:12px}
+    .flow-step{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+    .flow-step:last-child{border-bottom:none}
+    .flow-dot{width:10px;height:10px;margin-top:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent-glow)}
+    .flow-step h3{font-size:18px;margin-bottom:4px;color:var(--text)}
 
-    .mini-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:10px 0 20px}
-    .mini-card-title{font-size:15px;color:var(--text);margin:8px 0 10px}
-    .mini-card{padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.03);position:relative}
-    .mini-card::after{content:"";position:absolute;left:14px;right:14px;bottom:8px;height:1px;background:rgba(232,146,10,.5);box-shadow:0 0 14px rgba(232,146,10,.45)}
+    .pipeline{position:relative;display:grid;gap:16px;margin-top:10px;padding-left:18px;border-left:2px solid rgba(232,146,10,.35)}
+    .pipeline-item h3{font-size:18px;margin-bottom:6px;color:var(--accent-strong)}
 
-    .pipeline{position:relative;display:grid;gap:22px;margin-top:12px;padding:8px 0}
-    .pipeline::before{content:"";position:absolute;left:18px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(232,146,10,.35),rgba(255,255,255,.1))}
-    .pipeline-item{position:relative;margin-left:48px;padding:16px 18px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.03)}
-    .pipeline-item::before{content:"";position:absolute;left:-38px;top:24px;width:18px;height:18px;border-radius:50%;background:#131313;border:2px solid var(--accent);box-shadow:0 0 12px rgba(232,146,10,.45)}
-    .pipeline-item h3{font-size:18px;margin-bottom:8px}
-
-    .roadmap{position:relative;margin-top:8px;padding:14px 0 10px}
-    .roadmap::before{content:"";position:absolute;left:50%;transform:translateX(-50%);top:0;bottom:0;width:2px;background:rgba(255,255,255,.22)}
-    .roadmap-item{position:relative;width:50%;padding:0 28px 22px}
-    .roadmap-item .node{position:absolute;top:10px;width:16px;height:16px;border-radius:50%;background:#111;border:2px solid var(--accent);box-shadow:0 0 10px rgba(232,146,10,.6)}
-    .roadmap-item .box{border:1px solid rgba(255,255,255,.13);border-radius:12px;padding:12px 14px;background:rgba(255,255,255,.03)}
-    .roadmap-item h4{color:var(--accent);font-size:16px;margin-bottom:4px}
-    .roadmap-item.left{margin-right:auto;text-align:right}
-    .roadmap-item.left .node{right:-8px}
-    .roadmap-item.right{margin-left:auto}
-    .roadmap-item.right .node{left:-8px}
-
-    .results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-    .result-block{padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);position:relative}
-    .result-block::after{content:"";position:absolute;left:14px;right:14px;bottom:7px;height:1px;background:rgba(232,146,10,.58);box-shadow:0 0 12px rgba(232,146,10,.5)}
+    .roadmap{display:grid;gap:10px;margin-top:8px}
+    .roadmap-item{padding:10px 0;border-bottom:1px dashed rgba(255,255,255,.16)}
+    .roadmap-item:last-child{border-bottom:none}
+    .roadmap-item h4{font-size:17px;color:var(--text);margin-bottom:4px}
 
     .tech-row{display:flex;flex-wrap:wrap;gap:8px}
-    .tech-badge{width:92px;height:92px;display:grid;place-items:center;text-align:center;padding:8px;border-radius:12px;border:1px solid var(--stroke-accent);background:rgba(232,146,10,.07);font-size:12px;line-height:1.2}
+    .tech-chip{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.03);font-size:13px;line-height:1.2;color:var(--muted-strong)}
+
+    .cta-wrap{margin-top:24px;border:1px solid var(--stroke-accent);border-radius:var(--radius);padding:34px 20px;text-align:center;background:radial-gradient(circle at 50% 0%,rgba(232,146,10,.22) 0%,rgba(232,146,10,.08) 40%,rgba(255,255,255,.02) 100%)}
+    .cta-wrap h3{font-size:clamp(26px,3vw,36px);line-height:1.15;margin-bottom:10px}
+    .cta-wrap p{max-width:640px;margin:0 auto 18px;color:var(--muted-strong)}
+    .cta-btn{display:inline-block;padding:12px 22px;border-radius:999px;background:linear-gradient(180deg,var(--accent-strong),var(--accent));color:#1c1200;font-weight:700;text-decoration:none;font-family:"Montserrat",sans-serif;transition:.2s}
+    .cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(232,146,10,.35)}
 
     .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
     .reveal.visible{opacity:1;transform:translateY(0)}
 
-    @media (max-width:840px){
-      .case-hero{padding-top:170px}
-      .roadmap::before{left:22px;transform:none}
-      .roadmap-item,.roadmap-item.left,.roadmap-item.right{width:100%;margin:0;text-align:left;padding:0 0 20px 52px}
-      .roadmap-item .node,.roadmap-item.left .node,.roadmap-item.right .node{left:14px;right:auto}
+    @media (max-width:900px){
+      .hero-results{grid-template-columns:1fr}
+      .header-nav{display:none}
+      .nav-toggle{display:grid;place-items:center}
+      .case-hero{padding-top:145px}
     }
   </style>
 </head>
 <body>
   <div class="page-bg" aria-hidden="true"></div>
-  <div class="orb orb-1" aria-hidden="true"></div>
-  <div class="orb orb-2" aria-hidden="true"></div>
-  <div class="orb orb-3" aria-hidden="true"></div>
   <div class="page-grid" aria-hidden="true"></div>
 
   <header id="hdr">
     <div class="header-top">
       <a class="header-logo" href="/">Aivion<span>.</span></a>
-      <div class="nav-flyout" aria-label="Навигация по кейсу">
-        <button class="nav-toggle" aria-label="Открыть навигацию"><span class="arrow">←</span></button>
-        <nav class="header-nav-grid">
-          <a class="nav-link" href="#context">Контекст</a>
-          <a class="nav-link" href="#problem">Проблема</a>
-          <a class="nav-link" href="#goal">Цель</a>
-          <a class="nav-link" href="#solution">Решение</a>
-          <a class="nav-link" href="#example">Пример</a>
-          <a class="nav-link" href="#results">Результаты</a>
-          <a class="nav-link" href="#stack">Стек</a>
-        </nav>
-      </div>
+
+      <nav class="header-nav" aria-label="Навигация по кейсу">
+        <a class="nav-link" href="#problem">Проблема</a>
+        <a class="nav-link" href="#solution">Решение</a>
+        <a class="nav-link" href="#architecture">Архитектура</a>
+        <a class="nav-link" href="#example">Пример</a>
+        <a class="nav-link" href="#stack">Стек</a>
+        <a class="nav-link" href="#cta">Контакт</a>
+      </nav>
+
+      <button class="nav-toggle" id="mobileNavToggle" aria-label="Открыть меню">☰</button>
+      <nav class="mobile-nav" id="mobileNav" aria-label="Мобильная навигация">
+        <a class="nav-link" href="#problem">Проблема</a>
+        <a class="nav-link" href="#solution">Решение</a>
+        <a class="nav-link" href="#architecture">Архитектура</a>
+        <a class="nav-link" href="#example">Пример</a>
+        <a class="nav-link" href="#stack">Стек</a>
+        <a class="nav-link" href="#cta">Контакт</a>
+      </nav>
     </div>
   </header>
 
   <div class="case-hero">
     <h1 class="case-title reveal">Мультиагентная система для <span class="hi">SMM</span></h1>
-    <p class="case-lead reveal">Маркетинговое агентство с 20+ каналами сократило подготовку одного Telegram-поста с почти часа до 2 минут благодаря мультиагентной архитектуре.</p>
+    <p class="case-lead reveal">Маркетинговое агентство с 20+ каналами сократило подготовку одного Telegram-поста с ~60 минут до ~2–3 минут благодаря мультиагентной архитектуре.</p>
+
+    <div class="hero-results reveal" aria-label="Ключевые результаты">
+      <div class="metric-card">
+        <div class="metric-value">x20</div>
+        <div class="metric-note">ускорение: с ~60 минут до ~2–3 минут на пост</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">−80%</div>
+        <div class="metric-note">ручной работы: меньше рутины и участия человека</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">−2 сотрудника</div>
+        <div class="metric-note">оптимизация команды и высвобождение ресурсов</div>
+      </div>
+    </div>
   </div>
 
   <div class="section-divider"></div>
 
   <article class="case-body">
-    <div class="section-heading reveal" id="context"><span class="section-num">1</span><h2>Контекст</h2></div>
-    <p class="reveal">Заказчик: маркетинговое агентство (NDA), ведущее более 20 Telegram-каналов различной тематики. Написание одного поста занимал почти час. Мы сократили это до 2 минут.</p>
+    <div class="section-heading reveal" id="problem"><h2>Какую проблему мы обнаружили</h2></div>
+    <p class="reveal">SMM-специалист вручную проходил весь цикл: от идеи и структуры до финального оформления в Telegram. Один пост занимал около часа, а при 20+ каналах это превращалось в непрерывный ручной конвейер с высоким риском потери качества.</p>
+    <p class="reveal">Мы увидели, что узкое место — не в скорости человека, а в самой архитектуре процесса: одна роль одновременно выполняла несколько разных задач. <span class="problem-accent">Поэтому цель проекта логично вытекала из проблемы:</span> разделить этапы, автоматизировать цикл создания контента и зафиксировать единый стандарт качества без расширения штата.</p>
 
     <div class="block-sep"></div>
 
-    <div class="section-heading reveal" id="problem"><span class="section-num">2</span><h2>Как мы диагностировали проблему</h2></div>
-    <p class="reveal bold-accent-smm"><strong><span class="smm">SMM</span>-специалист вручную проходил все этапы: придумывал тему, писал текст, адаптировал под формат Telegram, добавлял оформление. Один пост — около 50 минут.</strong></p>
-    <p class="reveal bold-accent-smm"><strong>При 20+ каналах это превращалось в конвейер, где человек работал как робот.</strong></p>
-    <p class="reveal bold-accent-smm"><strong>В ходе аудита стало ясно: корневая проблема не в скорости конкретного сотрудника, а в архитектуре процесса. Один человек закрывал четыре принципиально разные задачи одновременно — это</strong></p>
-    <p class="reveal"><span class="glow-underline">снижало качество каждой из них; делало масштабирование невозможным без найма</span></p>
-
-    <div class="block-sep"></div>
-
-    <div class="section-heading reveal" id="goal"><span class="section-num">3</span><h2>Цель</h2></div>
-    <div class="goal-label reveal">Цель</div>
-    <div class="goal-card reveal">Автоматизировать полный цикл создания контента и обеспечить единый стандарт качества без расширения штата.</div>
-
-    <div class="block-sep"></div>
-
-    <div class="section-heading reveal" id="solution"><span class="section-num">4</span><h2>Решение</h2></div>
-    <p class="reveal"><strong>Мы построили веб-приложение с мультиагентной архитектурой — каждый этап производства поста закреплён за отдельным агентом.</strong></p>
-
-    <p class="reveal mini-card-title">Это ключевое архитектурное решение:</p>
-    <div class="mini-card-grid reveal">
-      <div class="mini-card">агенты не конкурируют за контекст</div>
-      <div class="mini-card">не мешают друг другу</div>
-      <div class="mini-card">результат получается стабильным и предсказуемым</div>
-    </div>
-
-    <p class="reveal mini-card-title">Система работает как жёсткий конвейер:</p>
-    <div class="mini-card-grid reveal">
-      <div class="mini-card">результат каждого этапа передаётся следующему</div>
-      <div class="mini-card">используется типизированный JSON-бриф</div>
-      <div class="mini-card">агент не может двигаться дальше без валидного входа</div>
-    </div>
-
-    <p class="reveal mini-card-title">Это:</p>
-    <div class="mini-card-grid reveal">
-      <div class="mini-card">убирает «галлюцинации»</div>
-      <div class="mini-card">исключает генерацию «в никуда»</div>
+    <div class="section-heading reveal" id="solution"><h2>Решение</h2></div>
+    <p class="reveal"><strong>Мы заменили ручной сценарий последовательным агентным потоком, где каждый следующий шаг стартует только после валидного результата предыдущего.</strong></p>
+    <div class="solution-flow reveal">
+      <div class="flow-step">
+        <span class="flow-dot"></span>
+        <div>
+          <h3>Единый вход</h3>
+          <p>Система принимает задачу и переводит её в структурированный бриф, чтобы исключить разночтения на старте.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-dot"></span>
+        <div>
+          <h3>Поэтапная генерация</h3>
+          <p>Каждый агент отвечает только за свой тип работы, поэтому контекст не смешивается, а результат становится предсказуемым.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-dot"></span>
+        <div>
+          <h3>Контроль качества на выходе</h3>
+          <p>Финальный этап выравнивает стиль и формат перед публикацией — это снижает ручные правки и стабилизирует качество.</p>
+        </div>
+      </div>
     </div>
 
     <div class="block-sep"></div>
 
-    <div class="section-heading reveal"><span class="section-num">5</span><h2>Архитектура (цепочка агентов)</h2></div>
-    <div class="pipeline">
-      <div class="pipeline-item reveal"><h3>1. Агент-планировщик</h3><p>Формирует структуру поста, определяет ключевые мысли и формат подачи. На выходе формирует бриф, а не текст.</p></div>
-      <div class="pipeline-item reveal"><h3>2. Агент-копирайтер</h3><p>Пишет текст строго по брифу, не занимается структурой и форматированием. Разделение ответственности даёт более чистый результат.</p></div>
-      <div class="pipeline-item reveal"><h3>3. Агент-форматировщик</h3><p>Адаптирует текст под Telegram, разбивает на абзацы, добавляет эмодзи и CTA, не меняя смысл.</p></div>
-      <div class="pipeline-item reveal"><h3>4. Агент-редактор</h3><p>Исправляет ошибки, выравнивает стиль и проверяет tone of voice перед финальной выдачей.</p></div>
+    <div class="section-heading reveal" id="architecture"><h2>Архитектура (цепочка агентов)</h2></div>
+    <div class="pipeline reveal">
+      <div class="pipeline-item"><h3>Агент-планировщик</h3><p>Собирает структуру поста и ключевые тезисы в рабочий бриф.</p></div>
+      <div class="pipeline-item"><h3>Агент-копирайтер</h3><p>Создаёт текст строго по брифу, без смены логики и фокуса.</p></div>
+      <div class="pipeline-item"><h3>Агент-форматировщик</h3><p>Адаптирует материал под формат Telegram, сохраняя смысл и акценты.</p></div>
+      <div class="pipeline-item"><h3>Агент-редактор</h3><p>Проверяет стиль, тон и целостность перед передачей в публикацию.</p></div>
     </div>
 
     <div class="block-sep"></div>
 
-    <div class="section-heading reveal" id="example"><span class="section-num">6</span><h2>Пример использования</h2></div>
-    <div class="roadmap">
-      <div class="roadmap-item left reveal"><span class="node"></span><div class="box"><h4>01 Вход</h4><p>Аудитория: предприниматели. Цель: продажа услуги автоматизации.</p></div></div>
-      <div class="roadmap-item right reveal"><span class="node"></span><div class="box"><h4>02 Планировщик</h4><p>Формирует бриф: заголовок и структуру «проблема → последствия → решение → призыв».</p></div></div>
-      <div class="roadmap-item left reveal"><span class="node"></span><div class="box"><h4>03 Копирайтер</h4><p>Создаёт основной текст по структуре и тезисам.</p></div></div>
-      <div class="roadmap-item right reveal"><span class="node"></span><div class="box"><h4>04 Форматировщик</h4><p>Адаптирует контент под Telegram и усиливает читаемость.</p></div></div>
-      <div class="roadmap-item left reveal"><span class="node"></span><div class="box"><h4>05 Редактор</h4><p>Финализирует пост. Менеджер проверяет и публикует.</p></div></div>
+    <div class="section-heading reveal" id="example"><h2>Пример использования</h2></div>
+    <div class="roadmap reveal">
+      <div class="roadmap-item"><h4>Вход</h4><p>ЦА — предприниматели, задача — продажа услуги автоматизации.</p></div>
+      <div class="roadmap-item"><h4>Планировщик</h4><p>Формирует бриф с логикой «проблема → последствия → решение → призыв».</p></div>
+      <div class="roadmap-item"><h4>Копирайтер</h4><p>Пишет основное сообщение по тезисам и структуре.</p></div>
+      <div class="roadmap-item"><h4>Форматировщик</h4><p>Подготавливает контент к публикации в Telegram.</p></div>
+      <div class="roadmap-item"><h4>Редактор</h4><p>Проводит финальную проверку, после чего менеджер публикует пост.</p></div>
     </div>
 
     <div class="block-sep"></div>
 
-    <div class="section-heading reveal" id="results"><span class="section-num">7</span><h2>Результаты</h2></div>
-    <div class="results-grid reveal">
-      <div class="result-block"><strong>x20 ускорение</strong><br/>~50 минут → ~2 минуты на пост</div>
-      <div class="result-block"><strong>–80% ручной работы</strong><br/>Рутинные этапы убраны, роль специалиста смещена в контроль качества</div>
-      <div class="result-block"><strong>x2.3 рост ERR</strong><br/>Единая структура, форматирование и встроенные CTA</div>
-      <div class="result-block"><strong>Масштабирование без найма</strong><br/>20+ каналов обслуживаются тем же составом</div>
-    </div>
-
-    <div class="block-sep"></div>
-
-    <div class="section-heading reveal" id="stack"><span class="section-num">8</span><h2>Стек</h2></div>
+    <div class="section-heading reveal" id="stack"><h2>Стек технологий</h2></div>
     <div class="tech-row reveal">
-      <div class="tech-badge">Python</div>
-      <div class="tech-badge">LangChain</div>
-      <div class="tech-badge">OpenAI API</div>
-      <div class="tech-badge">FastAPI</div>
-      <div class="tech-badge">PostgreSQL</div>
-      <div class="tech-badge">Telegram Bot API</div>
+      <span class="tech-chip">Python 3.12</span>
+      <span class="tech-chip">FastAPI</span>
+      <span class="tech-chip">Google Gemini</span>
+      <span class="tech-chip">Telegram Bot API</span>
+      <span class="tech-chip">Yandex Object Storage</span>
+      <span class="tech-chip">Asyncio</span>
+      <span class="tech-chip">Pydantic</span>
+      <span class="tech-chip">Docker</span>
+    </div>
+
+    <div class="cta-wrap reveal" id="cta">
+      <h3>Обсудим вашу задачу</h3>
+      <p>Покажем, какие этапы можно автоматизировать в вашем процессе и где получить максимальный эффект по скорости и качеству.</p>
+      <a href="#" class="cta-btn">Запросить разбор</a>
     </div>
   </article>
 
   <script>
     const hdr = document.getElementById('hdr');
+    const mobileToggle = document.getElementById('mobileNavToggle');
+    const mobileNav = document.getElementById('mobileNav');
+
     window.addEventListener('scroll', () => {
       hdr.classList.toggle('scrolled', window.scrollY > 40);
     }, { passive: true });
+
+    mobileToggle.addEventListener('click', () => {
+      mobileNav.classList.toggle('open');
+    });
+
+    mobileNav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => mobileNav.classList.remove('open'));
+    });
 
     const reveals = document.querySelectorAll('.reveal');
     const obs = new IntersectionObserver((entries) => {
