@@ -69,11 +69,6 @@
     .flow-dot{width:10px;height:10px;margin-top:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent-glow)}
     .flow-step h3{font-size:18px;margin-bottom:4px;color:var(--text)}
 
-    .pipeline-horizontal{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
-    .pipeline-item{position:relative;min-height:132px;padding:18px;border:1px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.03);display:flex;flex-direction:column;justify-content:center}
-    .pipeline-item::after{display:none}
-    .pipeline-item h3{font-size:17px;margin-bottom:6px;color:var(--text)}
-
     .roadmap-vertical{position:relative;display:grid;gap:26px;margin-top:12px;padding:16px 0}
     .roadmap-vertical::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(232,146,10,.35);transform:translateX(-50%)}
     .roadmap-item{position:relative;width:calc(50% - 28px);padding:14px 14px 14px 18px;border:1px solid rgba(232,146,10,.32);border-radius:14px;background:rgba(255,255,255,.02);opacity:0;transform:translateY(26px);transition:opacity .45s ease,transform .45s ease}
@@ -105,8 +100,6 @@
       .header-nav{display:none}
       .nav-toggle{display:grid;place-items:center}
       .case-hero{padding-top:145px}
-      .pipeline-horizontal{grid-template-columns:1fr;justify-content:stretch}
-      .pipeline-item{aspect-ratio:auto}
       .roadmap-vertical::before{left:8px;transform:none}
       .roadmap-item{width:calc(100% - 24px);justify-self:end}
       .roadmap-item:nth-child(odd)::before,
@@ -203,11 +196,11 @@
     <div class="block-sep"></div>
 
     <div class="section-heading reveal" id="architecture"><h2>Архитектура (цепочка агентов)</h2></div>
-    <div class="pipeline-horizontal reveal">
-      <div class="pipeline-item"><h3>Агент-планировщик</h3><p>Собирает структуру поста и ключевые тезисы в рабочий бриф.</p></div>
-      <div class="pipeline-item"><h3>Агент-копирайтер</h3><p>Создаёт текст строго по брифу, без смены логики и фокуса.</p></div>
-      <div class="pipeline-item"><h3>Агент-форматировщик</h3><p>Адаптирует материал под формат Telegram, сохраняя смысл и акценты.</p></div>
-      <div class="pipeline-item"><h3>Агент-редактор</h3><p>Проверяет стиль, тон и целостность перед передачей в публикацию.</p></div>
+    <div class="roadmap-vertical">
+      <div class="roadmap-item"><h4>Агент-планировщик</h4><p>Собирает структуру поста и ключевые тезисы в рабочий бриф.</p></div>
+      <div class="roadmap-item"><h4>Агент-копирайтер</h4><p>Создаёт текст строго по брифу, без смены логики и фокуса.</p></div>
+      <div class="roadmap-item"><h4>Агент-форматировщик</h4><p>Адаптирует материал под формат Telegram, сохраняя смысл и акценты.</p></div>
+      <div class="roadmap-item"><h4>Агент-редактор</h4><p>Проверяет стиль, тон и целостность перед передачей в публикацию.</p></div>
     </div>
 
     <div class="block-sep"></div>
