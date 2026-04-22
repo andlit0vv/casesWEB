@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Кейс 01 — AI-микросервис для разбора заказов · Aivion</title>
-  <meta name="description" content="Как мы автоматизировали разбор тысяч телефонных заказов в день для крупного сервиса доставки."/>
+  <title>Кейс 01 — Мультиагентная система для SMM · Aivion</title>
+  <meta name="description" content="Как мы сократили производство Telegram-поста с 50 минут до 2 минут для агентства с 20+ каналами."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Montserrat:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet"/>
@@ -528,32 +528,32 @@
 
     <div class="tag-row reveal">
       <span class="tag tag-num">Кейс 01</span>
-      <span class="tag tag-cat">AI / Call Center</span>
+      <span class="tag tag-cat">AI / SMM Automation</span>
+      <span class="tag tag-date">20 апреля 2026</span>
     </div>
 
     <h1 class="case-title reveal">
-      AI-микросервис для&nbsp;<span class="hi">автоматического разбора</span><br>
-      заказов из&nbsp;звонков
+      Мультиагентная система для&nbsp;<span class="hi">SMM-производства</span><br>
+      Telegram-контента
     </h1>
 
     <p class="case-lead reveal">
-      Крупный сервис доставки обрабатывал тысячи телефонных заказов в&nbsp;день.
-      Операторы вводили адреса вручную — ошибки неизбежно приводили к&nbsp;сбоям доставки.
-      Мы&nbsp;убрали человеческий фактор из&nbsp;этого уравнения.
+      Агентство вело более 20 Telegram-каналов, где один пост занимал около 50 минут ручной работы.
+      Мы собрали мультиагентный конвейер и сократили подготовку поста до 2 минут без расширения штата.
     </p>
 
     <div class="metrics-row">
       <div class="metric reveal">
-        <div class="metric-val">от мин.<br>до <em>секунд</em></div>
-        <div class="metric-label">Время обработки заказа</div>
+        <div class="metric-val"><em>50</em> → 2<br>минуты</div>
+        <div class="metric-label">Время подготовки одного поста</div>
       </div>
       <div class="metric reveal">
-        <div class="metric-val"><em>10</em> воркеров</div>
-        <div class="metric-label">Параллельная обработка</div>
+        <div class="metric-val"><em>до 80%</em><br>меньше рутины</div>
+        <div class="metric-label">Сокращение ручной работы</div>
       </div>
       <div class="metric reveal">
-        <div class="metric-val"><em>0</em> ручного ввода</div>
-        <div class="metric-label">Адреса в унифицированном формате</div>
+        <div class="metric-val"><em>2.3×</em><br>рост ERR</div>
+        <div class="metric-label">Вовлечённость после стандартизации</div>
       </div>
     </div>
 
@@ -569,16 +569,16 @@
       <div class="info-card">
         <div class="info-card-label">Клиент</div>
         <div class="info-card-value">
-          <strong>Под NDA</strong> — крупный сервис доставки и логистики (E-commerce).
-          Тысячи телефонных заказов ежедневно.
+          <strong>Маркетинговое агентство (NDA)</strong> — ведение и развитие 20+ Telegram-каналов
+          в разных нишах.
         </div>
       </div>
       <div class="info-card">
         <div class="info-card-label">Команда проекта</div>
         <div class="info-card-value">
-          <strong>Backend Developer</strong>,
-          <strong>AI Engineer</strong>,
-          <strong>DevOps</strong>
+          <strong>AI Architect</strong>,
+          <strong>Prompt Engineer</strong>,
+          <strong>Fullstack Developer</strong>
         </div>
       </div>
     </div>
@@ -586,110 +586,84 @@
     <!-- Задача -->
     <div class="section-heading reveal">
       <span class="section-num">00</span>
-      <h3>Задача</h3>
+      <h3>Контекст и цель</h3>
     </div>
     <p class="reveal">
-      Клиент столкнулся с&nbsp;проблемой <span class="hl-amber">ошибок при ручном вводе адресов</span> операторами
-      колл-центра — это приводило к&nbsp;сбоям в&nbsp;доставке и&nbsp;недовольным клиентам.
-      Требовалось решение, которое могло бы автоматически «слушать» аудиозапись звонка,
-      <span class="hl-white">извлекать структурированные данные</span> (адрес, состав заказа)
-      и&nbsp;формировать транскрипцию для отдела контроля качества.
+      SMM-специалист закрывал весь цикл вручную: от выбора темы до финального оформления поста.
+      Один пост занимал около <span class="hl-amber">50 минут</span>, а при 20+ каналах команда
+      работала в режиме конвейера без возможности масштабирования.
+      Цель проекта — <span class="hl-white">автоматизировать полный цикл создания контента</span>
+      и закрепить единый стандарт качества без найма новых сотрудников.
     </p>
 
     <!-- Раздел 1 -->
     <div class="section-heading reveal">
       <span class="section-num">01</span>
-      <h3>Двухрежимная архитектура обработки</h3>
+      <h3>Диагностика проблемы</h3>
     </div>
     <p class="reveal">
-      На основе требований бизнеса мы реализовали два сценария работы AI-модели:
+      Во время аудита стало понятно, что узкое место не в скорости конкретного специалиста,
+      а в архитектуре процесса. Один человек одновременно выполнял четыре разные роли,
+      из-за чего терялись скорость, фокус и предсказуемость качества.
     </p>
     <ul class="reveal">
-      <li>
-        <span class="hl-white">Режим «Address Only»:</span> жёсткая экстракция данных.
-        Система игнорирует лишние разговоры и вычленяет только критически важные поля —
-        страна, город, улица, дом, ориентиры, детали заказа.
-        Используется <code>Pydantic</code> для валидации структуры JSON на выходе.
-      </li>
-      <li>
-        <span class="hl-white">Режим «Full Transcript»:</span> полная стенограмма диалога
-        с разделением по ролям (Клиент / Оператор) и таймкодами.
-        Используется для <span class="hl-amber">оценки работы операторов</span>.
-      </li>
+      <li><span class="hl-white">Планирование:</span> идея и структура поста рождались с нуля каждый раз.</li>
+      <li><span class="hl-white">Копирайтинг:</span> текст писался без формализованного брифа.</li>
+      <li><span class="hl-white">Адаптация под Telegram:</span> форматирование делалось вручную.</li>
+      <li><span class="hl-white">Редактура:</span> финальная вычитка зависела от загрузки и человеческого фактора.</li>
     </ul>
 
     <!-- Раздел 2 -->
     <div class="section-heading reveal">
       <span class="section-num">02</span>
-      <h3>Очередь задач и масштабируемость</h3>
+      <h3>Мультиагентная архитектура</h3>
     </div>
     <p class="reveal">
-      Чтобы сервис не «захлёбывался» в часы пик, мы внедрили
-      <span class="hl-amber">внутреннюю очередь задач</span> на базе <code>asyncio.Queue</code>
-      и систему воркеров.
+      Мы построили веб-приложение с жёстким конвейером из AI-агентов. Каждый этап закреплён
+      за отдельным агентом, а результат передаётся дальше через <span class="hl-amber">типизированный JSON-бриф</span>.
+      Пока вход не валиден, следующий шаг не запускается.
     </p>
     <ul class="reveal">
-      <li>
-        <span class="hl-white">API принимает запрос</span> и мгновенно отдаёт статус «Принято»,
-        освобождая соединение — клиент не ждёт.
-      </li>
-      <li>
-        <span class="hl-white">Фоновые воркеры</span> (<code>Worker-1…Worker-10</code>)
-        разбирают очередь, скачивают аудио, отправляют в нейросеть
-        и сохраняют результат в <span class="hl-emerald">S3-хранилище</span>.
-      </li>
+      <li><span class="hl-white">Агент-планировщик</span> формирует структуру, ключевые мысли и формат подачи.</li>
+      <li><span class="hl-white">Агент-копирайтер</span> пишет текст строго по брифу, не меняя архитектуру сообщения.</li>
+      <li><span class="hl-white">Агент-форматировщик</span> адаптирует текст под Telegram: абзацы, эмодзи, CTA.</li>
+      <li><span class="hl-white">Агент-редактор</span> устраняет ошибки, выравнивает стиль и проверяет tone of voice.</li>
     </ul>
 
     <!-- Раздел 3 -->
     <div class="section-heading reveal">
       <span class="section-num">03</span>
-      <h3>Умная тарификация и отказоустойчивость</h3>
+      <h3>Как это работает на практике</h3>
     </div>
-    <p class="reveal">В коде реализована сложная логика работы с API и финансами:</p>
+    <p class="reveal">
+      SMM-менеджер задаёт вводные: аудитория, цель и ключевые тезисы (например,
+      «сокращение времени», «снижение затрат», «рост выручки»).
+      Система последовательно проходит весь пайплайн и отдаёт уже готовый пост к публикации.
+    </p>
     <ul class="reveal">
-      <li>
-        <span class="hl-white">Расчёт стоимости:</span> система автоматически считает
-        длительность аудио и количество токенов, списывая средства с внутреннего баланса проекта.
-      </li>
-      <li>
-        <span class="hl-white">Retry-политика:</span> если AI-провайдер не отвечает или возвращает ошибку,
-        система делает несколько попыток с <span class="hl-amber">экспоненциальной задержкой</span>,
-        прежде чем пометить задачу как ошибочную.
-      </li>
-      <li>
-        <span class="hl-white">Гибридный анализ аудио:</span> комбинированный метод
-        (анализ байтов в памяти + fallback через временные файлы) исключает ошибки
-        при битых заголовках MP3.
-      </li>
+      <li><span class="hl-white">Planner:</span> создаёт заголовок и структуру типа «проблема → последствия → решение → призыв».</li>
+      <li><span class="hl-white">Writer:</span> превращает структуру в целостный продающий текст.</li>
+      <li><span class="hl-white">Formatter:</span> приводит материал к нативному Telegram-формату.</li>
+      <li><span class="hl-white">Editor:</span> финально проверяет качество перед выдачей менеджеру.</li>
     </ul>
 
     <!-- Раздел 4 -->
     <div class="section-heading reveal">
       <span class="section-num">04</span>
-      <h3>Админ-панель в Telegram</h3>
+      <h3>Контроль качества и предсказуемость</h3>
     </div>
     <p class="reveal">
-      Для оперативного мониторинга мы создали
-      <span class="hl-white">Telegram-бота</span>,
-      интегрированного прямо в сервис — без доступа к консоли сервера.
+      Все роли, форматы данных и правила работы жёстко заданы в системных промптах.
+      Агенты не «конкурируют» за контекст и не импровизируют вне своей зоны ответственности,
+      поэтому выход стабилен даже при большом объёме публикаций.
     </p>
-    <ul class="reveal">
-      <li>
-        <span class="hl-white">Статистика:</span> администратор получает красивые PNG-отчёты
-        с графиками расходов, количеством обработанных минут и ошибок.
-      </li>
-      <li>
-        <span class="hl-white">Управление:</span> пополнение баланса, смена API-ключей
-        и мониторинг состояния системы — всё через бота.
-      </li>
-    </ul>
 
     <!-- Результаты -->
     <div class="section-heading reveal">
       <span class="section-num">05</span>
       <h3>Результаты</h3>
     </div>
-    <p class="reveal">Клиент получил автономный сервис, обрабатывающий входящий поток звонков без участия человека.</p>
+    <p class="reveal">Агентство перевело команду из ручного производства в режим контроля качества и масштабирования.</p>
 
     <div class="results-list reveal">
       <div class="result-item">
@@ -697,7 +671,7 @@
           <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
         </div>
         <div class="result-text">
-          <strong>Время обработки заказа</strong> сократилось с минут до секунд.
+          <strong>В 20 раз быстрее производство контента:</strong> подготовка поста сократилась с ~50 до ~2 минут.
         </div>
       </div>
       <div class="result-item">
@@ -705,8 +679,7 @@
           <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
         <div class="result-text">
-          <strong>Адреса доставки</strong> теперь приходят в унифицированном формате,
-          готовом для построения маршрутов курьеров.
+          <strong>До 80% меньше ручной работы:</strong> специалисты сфокусировались на контроле качества, а не рутине.
         </div>
       </div>
       <div class="result-item">
@@ -714,7 +687,7 @@
           <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </div>
         <div class="result-text">
-          <strong>Полный контроль расходов</strong> на AI-генерацию реализован внутри сервиса.
+          <strong>Рост ERR в 2,3 раза</strong> и масштабирование 20+ каналов без расширения штата.
         </div>
       </div>
     </div>
@@ -722,9 +695,8 @@
     <!-- Callout -->
     <div class="callout reveal">
       <p>
-        Клиент под NDA — ни логотип, ни название компании не раскрываются.
-        Если вас интересуют детали реализации или возможность подобного решения для вашего бизнеса —
-        свяжитесь с нами напрямую.
+        Кейс реализован для клиента под NDA.
+        Можем показать архитектурный подход, логику промптов и схему оркестрации на созвоне.
       </p>
     </div>
 
@@ -734,14 +706,12 @@
       <h3>Стек технологий</h3>
     </div>
     <div class="tech-grid reveal">
-      <span class="tech-badge">Python 3.12</span>
+      <span class="tech-badge">Python</span>
+      <span class="tech-badge">LangChain</span>
+      <span class="tech-badge">OpenAI API</span>
       <span class="tech-badge">FastAPI</span>
-      <span class="tech-badge">Google Gemini</span>
+      <span class="tech-badge">PostgreSQL</span>
       <span class="tech-badge">Telegram Bot API</span>
-      <span class="tech-badge">Yandex Object Storage</span>
-      <span class="tech-badge">Asyncio</span>
-      <span class="tech-badge">Pydantic</span>
-      <span class="tech-badge">Docker</span>
     </div>
 
   </article>
