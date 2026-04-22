@@ -80,11 +80,32 @@
     .roadmap-marker{grid-column:2;justify-self:center;width:34px;height:34px;border-radius:50%;border:2px solid var(--accent);background:#000;box-shadow:0 0 0 8px rgba(255,215,0,.08);position:relative;z-index:1}
     .roadmap-item h4{font-size:18px;color:var(--accent);margin-bottom:6px}
     .roadmap-item p{color:var(--text);font-size:15px;line-height:1.7}
+    .expand-btn{margin-top:8px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:var(--text);font-size:12px;line-height:1;padding:8px 14px;border-radius:999px;cursor:pointer;transition:background .2s,border-color .2s}
+    .expand-btn:hover{border-color:var(--stroke-accent);background:rgba(255,215,0,.08)}
+    .step-dropdown{max-height:0;opacity:0;overflow:hidden;transition:max-height .28s ease,opacity .24s ease;margin-top:0}
+    .step-dropdown p{font-size:13px;line-height:1.6;color:#9CA3AF}
+    .step-dropdown.open{max-height:120px;opacity:1;margin-top:10px}
 
-    .agent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 48px;margin-top:24px}
-    .agent-cell{padding:20px 0;background:none;border:none;border-bottom:1px solid rgba(255,255,255,.1)}
-    .agent-cell h4{font-size:20px;color:var(--accent);margin-bottom:8px}
-    .agent-cell p{color:var(--text)}
+    .architecture-system{position:relative;max-width:760px;min-height:430px;margin:28px auto 0}
+    .architecture-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:148px;height:148px;border-radius:50%;border:2px dashed rgba(255,215,0,.9);background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.2),transparent 58%),var(--accent-soft);display:grid;place-items:center;z-index:2;animation:spin-slow 8s linear infinite}
+    .architecture-core span{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+    .architecture-agents{position:absolute;inset:0}
+    .agent-node{position:absolute;width:min(40%,250px);padding:14px 16px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(44,44,44,.72);box-shadow:0 10px 28px rgba(0,0,0,.28)}
+    .agent-node h4{font-size:16px;color:var(--accent);margin-bottom:4px}
+    .agent-node p{font-size:13px;line-height:1.6;color:var(--text);margin:0}
+    .agent-node--tl{top:10px;left:6%}
+    .agent-node--bl{bottom:10px;left:6%}
+    .agent-node--tr{top:10px;right:6%}
+    .agent-node--br{bottom:10px;right:6%}
+    .arch-link{position:absolute;left:50%;top:50%;height:1px;transform-origin:left center;background:linear-gradient(90deg,rgba(255,215,0,.45),rgba(255,215,0,.08));opacity:.55;z-index:1}
+    .arch-link--tl{width:210px;transform:translate(-6px,-6px) rotate(-146deg)}
+    .arch-link--bl{width:210px;transform:translate(-6px,6px) rotate(146deg)}
+    .arch-link--tr{width:210px;transform:translate(6px,-6px) rotate(-34deg)}
+    .arch-link--br{width:210px;transform:translate(6px,6px) rotate(34deg)}
+    @keyframes spin-slow {
+      from { transform:translate(-50%,-50%) rotate(0deg); }
+      to { transform:translate(-50%,-50%) rotate(360deg); }
+    }
 
     .tech-row{display:flex;flex-wrap:wrap;gap:12px 22px}
     .tech-chip{padding:0;border:none;background:none;font-size:14px;line-height:1.7;color:var(--text)}
@@ -111,7 +132,25 @@
       .roadmap-item.left .roadmap-content,
       .roadmap-item.right .roadmap-content{grid-column:2;justify-self:start;text-align:left;padding:0}
       .roadmap-marker{grid-column:1;justify-self:center;width:24px;height:24px;box-shadow:0 0 0 5px rgba(255,215,0,.08);margin-top:4px}
-      .agent-grid{grid-template-columns:1fr}
+      .architecture-system{min-height:560px}
+      .architecture-core{width:128px;height:128px}
+      .agent-node{width:min(42%,220px)}
+      .agent-node--tl{top:18px;left:0}
+      .agent-node--tr{top:18px;right:0}
+      .agent-node--bl{bottom:18px;left:0}
+      .agent-node--br{bottom:18px;right:0}
+      .arch-link{width:170px}
+      .arch-link--tl{transform:translate(-8px,-8px) rotate(-147deg)}
+      .arch-link--bl{transform:translate(-8px,8px) rotate(147deg)}
+      .arch-link--tr{transform:translate(8px,-8px) rotate(-33deg)}
+      .arch-link--br{transform:translate(8px,8px) rotate(33deg)}
+    }
+    @media (max-width:640px){
+      .architecture-system{min-height:640px}
+      .architecture-core{top:49%}
+      .architecture-agents{display:flex;flex-direction:column;justify-content:space-between;padding-top:8px}
+      .agent-node{position:relative;width:100%;left:auto;right:auto;top:auto;bottom:auto;margin:12px 0}
+      .arch-link{display:none}
     }
   </style>
 </head>
@@ -198,11 +237,18 @@
     <div class="block-sep"></div>
 
     <div class="section-heading reveal" id="architecture"><h2>Архитектура (цепочка агентов)</h2></div>
-    <div class="agent-grid">
-      <div class="agent-cell reveal"><h4>Агент-планировщик</h4><p>Собирает структуру поста и ключевые тезисы в рабочий бриф.</p></div>
-      <div class="agent-cell reveal"><h4>Агент-копирайтер</h4><p>Создаёт текст строго по брифу, без смены логики и фокуса.</p></div>
-      <div class="agent-cell reveal"><h4>Агент-форматировщик</h4><p>Адаптирует материал под формат Telegram, сохраняя смысл и акценты.</p></div>
-      <div class="agent-cell reveal"><h4>Агент-редактор</h4><p>Проверяет стиль, тон и целостность перед передачей в публикацию.</p></div>
+    <div class="architecture-system reveal" aria-label="Диаграмма мультиагентной архитектуры">
+      <span class="arch-link arch-link--tl" aria-hidden="true"></span>
+      <span class="arch-link arch-link--bl" aria-hidden="true"></span>
+      <span class="arch-link arch-link--tr" aria-hidden="true"></span>
+      <span class="arch-link arch-link--br" aria-hidden="true"></span>
+      <div class="architecture-core"><span>Core AI</span></div>
+      <div class="architecture-agents">
+        <article class="agent-node agent-node--tl"><h4>Planner Agent</h4><p>Формирует логичную структуру и тезисы из входных данных.</p></article>
+        <article class="agent-node agent-node--bl"><h4>Operator Agent</h4><p>Создаёт основной текст по брифу без потери контекста.</p></article>
+        <article class="agent-node agent-node--tr"><h4>Formatter Agent</h4><p>Адаптирует стиль под Telegram и усиливает читаемость.</p></article>
+        <article class="agent-node agent-node--br"><h4>Editor Agent</h4><p>Проводит финальную валидацию тона и качества.</p></article>
+      </div>
     </div>
 
     <div class="block-sep"></div>
@@ -211,23 +257,23 @@
     <div class="roadmap-vertical">
       <div class="roadmap-item right">
         <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Вход</h4><p>ЦА — предприниматели, задача — продажа услуги автоматизации.</p></div>
+        <div class="roadmap-content"><h4>Input</h4><p>Target audience: entrepreneurs, goal: sell automation services.</p><button class="expand-btn" type="button" aria-expanded="false">Expand</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
       </div>
       <div class="roadmap-item left">
         <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Планировщик</h4><p>Формирует бриф с логикой «проблема → последствия → решение → призыв».</p></div>
+        <div class="roadmap-content"><h4>Planner</h4><p>Builds a brief with logic “problem → impact → solution → CTA”.</p><button class="expand-btn" type="button" aria-expanded="false">Expand</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
       </div>
       <div class="roadmap-item right">
         <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Копирайтер</h4><p>Пишет основное сообщение по тезисам и структуре.</p></div>
+        <div class="roadmap-content"><h4>Operator</h4><p>Generates the main message from the approved brief.</p><button class="expand-btn" type="button" aria-expanded="false">Expand</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
       </div>
       <div class="roadmap-item left">
         <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Форматировщик</h4><p>Подготавливает контент к публикации в Telegram.</p></div>
+        <div class="roadmap-content"><h4>Formatter</h4><p>Prepares the content layout for Telegram publishing.</p><button class="expand-btn" type="button" aria-expanded="false">Expand</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
       </div>
       <div class="roadmap-item right">
         <span class="roadmap-marker" aria-hidden="true"></span>
-        <div class="roadmap-content"><h4>Редактор</h4><p>Проводит финальную проверку, после чего менеджер публикует пост.</p></div>
+        <div class="roadmap-content"><h4>Editor</h4><p>Runs final quality checks before manager publication.</p><button class="expand-btn" type="button" aria-expanded="false">Expand</button><div class="step-dropdown" aria-hidden="true"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p></div></div>
       </div>
     </div>
 
@@ -287,6 +333,17 @@
       });
     }, { threshold: 0.3, rootMargin: '0px 0px -10% 0px' });
     roadmapItems.forEach((item) => roadmapObs.observe(item));
+
+    const expandButtons = document.querySelectorAll('.expand-btn');
+    expandButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const dropdown = button.nextElementSibling;
+        const isOpen = dropdown.classList.toggle('open');
+        button.setAttribute('aria-expanded', String(isOpen));
+        dropdown.setAttribute('aria-hidden', String(!isOpen));
+        button.textContent = isOpen ? 'Collapse' : 'Expand';
+      });
+    });
   </script>
 </body>
 </html>
