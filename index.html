@@ -137,19 +137,19 @@
       .roadmap-item.left .roadmap-content,
       .roadmap-item.right .roadmap-content{grid-column:2;justify-self:start;text-align:left;padding:0}
       .roadmap-marker{grid-column:1;justify-self:center;width:24px;height:24px;box-shadow:0 0 0 5px rgba(255,215,0,.08);margin-top:4px}
-      .architecture-system{min-height:560px}
-      .architecture-orbit{width:270px}
-      .agent-node{width:min(42%,220px)}
-      .agent-node--tl{top:18px;left:0}
-      .agent-node--tr{top:18px;right:0}
-      .agent-node--bl{bottom:18px;left:0}
-      .agent-node--br{bottom:18px;right:0}
+      .architecture-system{min-height:680px}
+      .architecture-road{inset:10px 0 0}
+      .agent-node{width:min(47%,250px)}
+      .agent-node--tl{top:22px;left:0}
+      .agent-node--tr{top:205px;right:0}
+      .agent-node--bl{top:400px;left:0}
+      .agent-node--br{top:560px;right:0}
     }
     @media (max-width:640px){
-      .architecture-system{min-height:640px}
-      .architecture-orbit{width:220px}
-      .architecture-agents{display:flex;flex-direction:column;justify-content:space-between;padding-top:8px}
-      .agent-node{position:relative;width:100%;left:auto;right:auto;top:auto;bottom:auto;margin:12px 0}
+      .architecture-system{min-height:auto}
+      .architecture-road{display:none}
+      .architecture-agents{position:relative;display:flex;flex-direction:column;gap:14px}
+      .agent-node{position:relative;width:100%;left:auto;right:auto;top:auto;bottom:auto;margin:0;opacity:1;transform:none}
     }
   </style>
 </head>
@@ -226,7 +226,12 @@
 
     <div class="section-heading reveal" id="architecture"><h2>Архитектура (цепочка агентов)</h2></div>
     <div class="architecture-system reveal" aria-label="Диаграмма мультиагентной архитектуры">
-      <span class="architecture-orbit" aria-hidden="true"></span>
+      <svg class="architecture-road" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M 120 90 C 300 40, 350 220, 530 240 S 760 380, 880 540"></path>
+        <circle cx="120" cy="90" r="18"></circle>
+        <circle cx="530" cy="240" r="18"></circle>
+        <circle cx="880" cy="540" r="18"></circle>
+      </svg>
       <div class="architecture-agents">
         <article class="agent-node agent-node--tl"><h4>Planner Agent</h4><p>Формирует логичную структуру и тезисы из входных данных.</p></article>
         <article class="agent-node agent-node--bl"><h4>Operator Agent</h4><p>Создаёт основной текст по брифу без потери контекста.</p></article>
@@ -352,6 +357,14 @@
         button.textContent = isOpen ? 'СКРЫТЬ' : 'ОТКРЫТЬ';
       });
     });
+
+    const architectureNodes = document.querySelectorAll('.architecture-system .agent-node');
+    const architectureObs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle('visible', entry.isIntersecting);
+      });
+    }, { threshold: 0.45, rootMargin: '0px 0px -5% 0px' });
+    architectureNodes.forEach((node) => architectureObs.observe(node));
   </script>
 </body>
 </html>
