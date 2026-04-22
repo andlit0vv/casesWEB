@@ -25,7 +25,18 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{background:var(--bg);color:var(--text);font-family:"Montserrat",sans-serif;font-size:17px;line-height:1.9;letter-spacing:.01em;overflow-x:hidden}
-    .page-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(70% 40% at 50% -10%,rgba(255,215,0,.16),transparent 65%),#000}
+    body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:150;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");opacity:.09;mix-blend-mode:soft-light}
+    .page-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;--cx:50%;--cy:50%;background:#000}
+    .grid-base,.grid-reveal{position:absolute;inset:0}
+    .grid-base{z-index:1;opacity:.07}
+    .grid-reveal{z-index:2;opacity:.62;-webkit-mask-image:radial-gradient(340px circle at var(--cx) var(--cy),black 0%,transparent 100%);mask-image:radial-gradient(340px circle at var(--cx) var(--cy),black 0%,transparent 100%)}
+    .grid-base svg,.grid-reveal svg{width:100%;height:100%;display:block}
+    .bg-orbs{position:absolute;inset:0;z-index:0}
+    .bg-orb{position:absolute;border-radius:50%;filter:blur(90px);animation:orbFloat ease-in-out infinite alternate}
+    .bg-orb--gold{width:46%;height:46%;right:-16%;top:-18%;background:radial-gradient(circle,rgba(255,215,0,.36) 0%,rgba(255,175,40,.15) 50%,transparent 72%);animation-duration:20s}
+    .bg-orb--amber{width:42%;height:42%;left:-12%;bottom:-18%;background:radial-gradient(circle,rgba(255,170,0,.3) 0%,rgba(245,128,20,.13) 52%,transparent 72%);animation-duration:24s;animation-direction:reverse}
+    .bg-orb--sun{width:24%;height:24%;right:10%;top:-6%;background:radial-gradient(circle,rgba(255,224,120,.24) 0%,transparent 68%);filter:blur(65px);animation-duration:15s}
+    @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}100%{transform:translate(2%,-3%) scale(1.06)}}
     .page-grid{display:none}
 
     header{position:fixed;top:0;left:0;right:0;z-index:100;padding:15px clamp(16px,4vw,48px);transition:border-color .35s,background .35s}
@@ -153,7 +164,35 @@
   </style>
 </head>
 <body>
-  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-bg" id="pageBg" aria-hidden="true">
+    <div class="bg-orbs">
+      <div class="bg-orb bg-orb--gold"></div>
+      <div class="bg-orb bg-orb--amber"></div>
+      <div class="bg-orb bg-orb--sun"></div>
+    </div>
+
+    <div class="grid-base">
+      <svg id="svgBase">
+        <defs>
+          <pattern id="grid-base-pattern" width="44" height="44" patternUnits="userSpaceOnUse">
+            <path d="M 44 0 L 0 0 0 44" fill="none" stroke="rgba(255,190,70,1)" stroke-width="0.82"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid-base-pattern)"/>
+      </svg>
+    </div>
+
+    <div class="grid-reveal">
+      <svg id="svgReveal">
+        <defs>
+          <pattern id="grid-reveal-pattern" width="44" height="44" patternUnits="userSpaceOnUse">
+            <path d="M 44 0 L 0 0 0 44" fill="none" stroke="rgba(255,215,80,1)" stroke-width="1.2"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid-reveal-pattern)"/>
+      </svg>
+    </div>
+  </div>
   <div class="page-grid" aria-hidden="true"></div>
 
   <header id="hdr">
@@ -368,6 +407,56 @@
       });
     }, { threshold: 0.2, rootMargin: '-8% 0px -8% 0px' });
     architectureNodes.forEach((node) => architectureObs.observe(node));
+
+    (function () {
+      const bg = document.getElementById('pageBg');
+      const svgBase = document.getElementById('svgBase');
+      const svgReveal = document.getElementById('svgReveal');
+      const patBase = document.getElementById('grid-base-pattern');
+      const patReveal = document.getElementById('grid-reveal-pattern');
+
+      if (!bg || !svgBase || !svgReveal || !patBase || !patReveal) return;
+
+      const CELL = 44;
+      const SPX = 0.42;
+      const SPY = 0.28;
+      let offX = 0;
+      let offY = 0;
+
+      function setSize() {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        [svgBase, svgReveal].forEach((svg) => {
+          svg.setAttribute('width', String(w));
+          svg.setAttribute('height', String(h));
+          svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+        });
+      }
+
+      function tick() {
+        offX = (offX + SPX) % CELL;
+        offY = (offY + SPY) % CELL;
+        patBase.setAttribute('x', String(offX));
+        patBase.setAttribute('y', String(offY));
+        patReveal.setAttribute('x', String(offX));
+        patReveal.setAttribute('y', String(offY));
+        requestAnimationFrame(tick);
+      }
+
+      window.addEventListener('mousemove', (e) => {
+        bg.style.setProperty('--cx', `${e.clientX}px`);
+        bg.style.setProperty('--cy', `${e.clientY}px`);
+      }, { passive: true });
+
+      window.addEventListener('mouseleave', () => {
+        bg.style.setProperty('--cx', '-500px');
+        bg.style.setProperty('--cy', '-500px');
+      });
+
+      setSize();
+      window.addEventListener('resize', setSize);
+      requestAnimationFrame(tick);
+    })();
   </script>
 </body>
 </html>
