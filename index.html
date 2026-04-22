@@ -69,12 +69,24 @@
     .flow-dot{width:10px;height:10px;margin-top:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent-glow)}
     .flow-step h3{font-size:18px;margin-bottom:4px;color:var(--text)}
 
-    .pipeline{position:relative;display:grid;gap:16px;margin-top:10px;padding-left:18px;border-left:2px solid rgba(232,146,10,.35)}
-    .pipeline-item h3{font-size:18px;margin-bottom:6px;color:var(--accent-strong)}
+    .pipeline-horizontal{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:16px}
+    .pipeline-item{position:relative;padding:16px 14px;border:1px solid var(--stroke-accent);border-radius:14px;background:rgba(255,255,255,.02)}
+    .pipeline-item::after{content:"";position:absolute;top:50%;left:100%;width:16px;height:2px;background:rgba(232,146,10,.45);transform:translateY(-50%)}
+    .pipeline-item:last-child::after{display:none}
+    .pipeline-item h3{font-size:17px;margin-bottom:6px;color:var(--accent-strong)}
 
-    .roadmap{display:grid;gap:10px;margin-top:8px}
-    .roadmap-item{padding:10px 0;border-bottom:1px dashed rgba(255,255,255,.16)}
-    .roadmap-item:last-child{border-bottom:none}
+    .roadmap-vertical{position:relative;display:grid;gap:26px;margin-top:12px;padding:16px 0}
+    .roadmap-vertical::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(232,146,10,.35);transform:translateX(-50%)}
+    .roadmap-item{position:relative;width:calc(50% - 28px);padding:14px 14px 14px 18px;border:1px solid rgba(232,146,10,.32);border-radius:14px;background:rgba(255,255,255,.02);opacity:0;transform:translateY(26px);transition:opacity .45s ease,transform .45s ease}
+    .roadmap-item.visible{opacity:1;transform:translateY(0)}
+    .roadmap-item::before{content:"";position:absolute;top:50%;width:28px;height:2px;background:rgba(232,146,10,.45)}
+    .roadmap-item::after{content:"";position:absolute;top:50%;width:12px;height:12px;border-radius:50%;border:2px solid var(--accent-strong);background:#000;transform:translateY(-50%)}
+    .roadmap-item:nth-child(odd){justify-self:start}
+    .roadmap-item:nth-child(odd)::before{left:100%}
+    .roadmap-item:nth-child(odd)::after{right:-34px}
+    .roadmap-item:nth-child(even){justify-self:end}
+    .roadmap-item:nth-child(even)::before{right:100%}
+    .roadmap-item:nth-child(even)::after{left:-34px}
     .roadmap-item h4{font-size:17px;color:var(--text);margin-bottom:4px}
 
     .tech-row{display:flex;flex-wrap:wrap;gap:8px}
@@ -94,6 +106,14 @@
       .header-nav{display:none}
       .nav-toggle{display:grid;place-items:center}
       .case-hero{padding-top:145px}
+      .pipeline-horizontal{grid-template-columns:1fr}
+      .pipeline-item::after{left:50%;top:100%;width:2px;height:16px;transform:translateX(-50%)}
+      .roadmap-vertical::before{left:8px;transform:none}
+      .roadmap-item{width:calc(100% - 24px);justify-self:end}
+      .roadmap-item:nth-child(odd)::before,
+      .roadmap-item:nth-child(even)::before{right:100%;left:auto}
+      .roadmap-item:nth-child(odd)::after,
+      .roadmap-item:nth-child(even)::after{left:-22px;right:auto}
     }
   </style>
 </head>
@@ -184,7 +204,7 @@
     <div class="block-sep"></div>
 
     <div class="section-heading reveal" id="architecture"><h2>Архитектура (цепочка агентов)</h2></div>
-    <div class="pipeline reveal">
+    <div class="pipeline-horizontal reveal">
       <div class="pipeline-item"><h3>Агент-планировщик</h3><p>Собирает структуру поста и ключевые тезисы в рабочий бриф.</p></div>
       <div class="pipeline-item"><h3>Агент-копирайтер</h3><p>Создаёт текст строго по брифу, без смены логики и фокуса.</p></div>
       <div class="pipeline-item"><h3>Агент-форматировщик</h3><p>Адаптирует материал под формат Telegram, сохраняя смысл и акценты.</p></div>
@@ -194,7 +214,7 @@
     <div class="block-sep"></div>
 
     <div class="section-heading reveal" id="example"><h2>Пример использования</h2></div>
-    <div class="roadmap reveal">
+    <div class="roadmap-vertical">
       <div class="roadmap-item"><h4>Вход</h4><p>ЦА — предприниматели, задача — продажа услуги автоматизации.</p></div>
       <div class="roadmap-item"><h4>Планировщик</h4><p>Формирует бриф с логикой «проблема → последствия → решение → призыв».</p></div>
       <div class="roadmap-item"><h4>Копирайтер</h4><p>Пишет основное сообщение по тезисам и структуре.</p></div>
@@ -245,12 +265,19 @@
       entries.forEach((e) => {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
-          obs.unobserve(e.target);
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
 
     reveals.forEach(el => obs.observe(el));
+
+    const roadmapItems = document.querySelectorAll('.roadmap-item');
+    const roadmapObs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle('visible', entry.isIntersecting);
+      });
+    }, { threshold: 0.3, rootMargin: '0px 0px -10% 0px' });
+    roadmapItems.forEach((item) => roadmapObs.observe(item));
   </script>
 </body>
 </html>
